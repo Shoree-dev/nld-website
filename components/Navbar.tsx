@@ -29,21 +29,19 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
   ];
 
   return (
-    <header className="w-full sticky top-0 z-40 bg-[#020208]/80 backdrop-blur-xl border-b border-cyan-500/20 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between gap-6">
-        {/* Brand / Logo */}
+    <header className="w-full sticky top-0 z-40 bg-[#020208]/75 backdrop-blur-xl border-b border-neutral-800/80 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 flex items-center justify-between gap-6">
+        {/* Brand / Logo in Outfit font */}
         <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-          <div className="flex items-center">
-            <span className="font-['Rajdhani',sans-serif] font-black text-3xl md:text-4xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-400 group-hover:scale-105 transition-transform duration-300">
-              NLD
-            </span>
-          </div>
-          <span className="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-widest text-neutral-400 px-2.5 py-0.5 rounded-full bg-neutral-900/80 border border-neutral-800">
+          <span className="font-['Outfit',sans-serif] font-black text-3xl md:text-4xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#ff00ff] to-[#00ffff] group-hover:opacity-90 transition-opacity">
+            NLD
+          </span>
+          <span className="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-widest text-neutral-400 px-3 py-1 rounded-full bg-neutral-900/80 border border-neutral-800">
             Rocket League
           </span>
         </Link>
 
-        {/* Center Navigation Links */}
+        {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -51,18 +49,18 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-semibold tracking-wider transition-all duration-200 relative py-1 ${
+                className={`text-sm font-semibold tracking-wider transition-all duration-300 relative py-1 ${
                   isActive
-                    ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(0,255,255,0.7)]'
-                    : 'text-neutral-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]'
+                    ? 'text-cyan-400 drop-shadow-[0_0_12px_rgba(0,255,255,0.7)]'
+                    : 'text-neutral-400 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]'
                 }`}
               >
                 {link.label}
                 {isActive && (
                   <motion.div
-                    layoutId="navbar-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-fuchsia-500 to-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.8)] rounded-full"
-                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                    layoutId="navbar-active-pill"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[#ff00ff] to-[#00ffff] rounded-full shadow-[0_0_10px_rgba(0,255,255,0.8)]"
+                    transition={{ type: 'spring', stiffness: 220, damping: 20 }}
                   />
                 )}
               </Link>
@@ -70,7 +68,7 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
           })}
         </nav>
 
-        {/* Right Section: Status Indicator & Auth Button */}
+        {/* Right Section: Status Badge & Auth */}
         <div className="flex items-center gap-5">
           {/* Online Players Pill */}
           <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/30 border border-cyan-500/30 text-xs font-semibold text-cyan-300 shadow-[0_0_15px_rgba(0,255,255,0.15)]">
@@ -81,14 +79,14 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
             <span>{onlineCount} Online</span>
           </div>
 
-          {/* User Profile or Discord Login */}
+          {/* User Profile or Discord Login CTA */}
           {user ? (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center gap-3 p-1 rounded-full bg-neutral-900/90 border border-neutral-700/80 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(0,255,255,0.4)] transition-all duration-300 focus:outline-none"
               >
-                <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-cyan-400/80 shadow-[0_0_10px_rgba(0,255,255,0.4)]">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.4)]">
                   {user.avatarUrl ? (
                     <Image
                       src={user.avatarUrl}
@@ -109,7 +107,6 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
                 <ChevronDown className="w-3.5 h-3.5 text-neutral-400 pr-1 group-hover:rotate-180 transition-transform" />
               </button>
 
-              {/* Modern Glassy Dropdown Menu */}
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
@@ -123,7 +120,7 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
                       <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
                         Signed in as
                       </p>
-                      <p className="text-base font-bold text-white font-['Rajdhani',sans-serif] truncate">
+                      <p className="text-base font-bold text-white font-['Outfit',sans-serif] truncate">
                         {user.username}
                       </p>
                       <p className="text-xs text-neutral-500 font-mono truncate">
@@ -170,7 +167,7 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
             <form action={loginWithDiscord}>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-full bg-[#00ffff] hover:bg-[#33ffff] text-black font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.6)] hover:shadow-[0_0_35px_rgba(0,255,255,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none"
+                className="px-6 py-2.5 rounded-full bg-[#00ffff] hover:bg-[#33ffff] text-black font-extrabold font-['Outfit',sans-serif] text-xs uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.6)] hover:shadow-[0_0_35px_rgba(0,255,255,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none"
               >
                 <DiscordIcon className="w-4 h-4 fill-black" />
                 <span>Login with Discord</span>

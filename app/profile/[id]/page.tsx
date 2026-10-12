@@ -64,7 +64,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           {/* Details */}
           <div className="flex-1 min-w-0 text-center md:text-left">
             <div className="flex flex-col md:flex-row md:items-center gap-3 mb-3">
-              <h1 className="font-['Rajdhani',sans-serif] font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">
+              <h1 className="font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">
                 {profile.username}
               </h1>
 
@@ -106,7 +106,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <Trophy className="w-4 h-4 text-fuchsia-400" />
             <span>Leaderboard Rank</span>
           </div>
-          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-white">
+          <span className="font-['Outfit',sans-serif] font-black text-4xl text-white">
             #{rank}
           </span>
         </div>
@@ -116,7 +116,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <Star className="w-4 h-4 text-cyan-400" />
             <span>Total Points</span>
           </div>
-          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-cyan-400">
+          <span className="font-['Outfit',sans-serif] font-black text-4xl text-cyan-400">
             {leaderboardEntry?.total_score || 0} PTS
           </span>
         </div>
@@ -126,7 +126,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <Target className="w-4 h-4 text-neutral-400" />
             <span>Placement Score</span>
           </div>
-          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-white">
+          <span className="font-['Outfit',sans-serif] font-black text-4xl text-white">
             {leaderboardEntry?.placement_points || 0}
           </span>
         </div>
@@ -136,7 +136,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <Zap className="w-4 h-4 text-fuchsia-400" />
             <span>MVP Score</span>
           </div>
-          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-fuchsia-400">
+          <span className="font-['Outfit',sans-serif] font-black text-4xl text-fuchsia-400">
             {leaderboardEntry?.mvp_points || 0}
           </span>
         </div>

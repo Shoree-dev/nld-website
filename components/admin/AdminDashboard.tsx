@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { LeaderboardEntry } from '@/lib/types';
 import { updateLeaderboardPointsAction, addNewVideoAction } from '@/app/actions/admin';
-import { Shield, Send, CheckCircle2, Video, Trophy, Sparkles } from 'lucide-react';
+import { Shield, Send, CheckCircle2, Video, Trophy } from 'lucide-react';
 
 interface AdminDashboardProps {
   initialEntries: LeaderboardEntry[];
@@ -102,10 +102,10 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
           <Shield className="w-3.5 h-3.5" />
           Admin Command Console
         </span>
-        <h1 className="font-['Rajdhani',sans-serif] font-black text-5xl sm:text-6xl uppercase tracking-tight text-white">
+        <h1 className="font-['Outfit',sans-serif] font-black text-5xl sm:text-6xl uppercase tracking-tight text-white">
           Admin Dashboard
         </h1>
-        <p className="mt-2 text-sm text-neutral-400">
+        <p className="mt-2 text-sm text-neutral-400 font-normal">
           Update player tournament points and publish new NLD Studios creator montages directly to Discord.
         </p>
       </div>
@@ -115,7 +115,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
         <div className="rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-8 shadow-[0_0_35px_rgba(255,0,255,0.15)]">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-800">
             <Trophy className="w-5 h-5 text-fuchsia-400" />
-            <h2 className="font-['Rajdhani',sans-serif] font-bold text-2xl text-white uppercase">
+            <h2 className="font-['Outfit',sans-serif] font-bold text-2xl text-white uppercase tracking-tight">
               Leaderboard Manager
             </h2>
           </div>
@@ -183,7 +183,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
               <span className="text-xs font-semibold text-neutral-400 uppercase">
                 Calculated Total
               </span>
-              <span className="font-['Rajdhani',sans-serif] font-black text-3xl text-fuchsia-400">
+              <span className="font-['Outfit',sans-serif] font-black text-3xl text-fuchsia-400">
                 {participation + placement + mvp} PTS
               </span>
             </div>
@@ -205,7 +205,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
             <button
               type="submit"
               disabled={loading}
-              className="py-3.5 px-8 rounded-full bg-[#ff00ff] hover:bg-[#ff24ff] text-black font-extrabold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(255,0,255,0.5)] hover:shadow-[0_0_35px_rgba(255,0,255,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="py-3.5 px-8 rounded-full bg-[#ff00ff] hover:bg-[#ff24ff] text-black font-extrabold font-['Outfit',sans-serif] text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(255,0,255,0.5)] hover:shadow-[0_0_35px_rgba(255,0,255,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
               <span>Save & Publish Standings</span>
@@ -224,7 +224,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
         <div className="rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-8 shadow-[0_0_35px_rgba(0,255,255,0.15)]">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-800">
             <Video className="w-5 h-5 text-cyan-400" />
-            <h2 className="font-['Rajdhani',sans-serif] font-bold text-2xl text-white uppercase">
+            <h2 className="font-['Outfit',sans-serif] font-bold text-2xl text-white uppercase tracking-tight">
               Creators Manager
             </h2>
           </div>
@@ -245,7 +245,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
                     onChange={() => setCreatorName('Bob')}
                     className="accent-cyan-400"
                   />
-                  <span>Bob</span>
+                  <span className="font-['Outfit',sans-serif] font-bold">Bob</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-white">
@@ -257,7 +257,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
                     onChange={() => setCreatorName('Strazak')}
                     className="accent-fuchsia-500"
                   />
-                  <span>Strazak</span>
+                  <span className="font-['Outfit',sans-serif] font-bold">Strazak</span>
                 </label>
               </div>
             </div>
@@ -337,7 +337,7 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
             <button
               type="submit"
               disabled={loading}
-              className="py-3.5 px-8 rounded-full bg-[#00ffff] hover:bg-[#33ffff] text-black font-extrabold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(0,255,255,0.5)] hover:shadow-[0_0_35px_rgba(0,255,255,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="py-3.5 px-8 rounded-full bg-[#00ffff] hover:bg-[#33ffff] text-black font-extrabold font-['Outfit',sans-serif] text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(0,255,255,0.5)] hover:shadow-[0_0_35px_rgba(0,255,255,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
               <span>Publish Video Montage</span>

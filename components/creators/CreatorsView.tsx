@@ -30,14 +30,14 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
     <div className="w-full max-w-7xl mx-auto px-6 md:px-12 py-12 select-none">
       {/* Header */}
       <div className="mb-12 text-center md:text-left flex flex-col items-center md:items-start">
-        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-fuchsia-950/30 border border-fuchsia-500/30 text-xs font-semibold text-fuchsia-400 uppercase tracking-wider mb-3">
+        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-fuchsia-950/40 border border-fuchsia-500/30 text-xs font-semibold text-fuchsia-400 uppercase tracking-wider mb-3">
           <Sparkles className="w-3.5 h-3.5" />
           NLD Studios
         </span>
-        <h1 className="font-['Rajdhani',sans-serif] font-black text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-white leading-tight">
+        <h1 className="font-['Outfit',sans-serif] font-black text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-white leading-tight">
           Creator Showcase
         </h1>
-        <p className="mt-2 text-sm md:text-base text-neutral-400 max-w-xl">
+        <p className="mt-2 text-sm md:text-base text-neutral-400 max-w-xl font-normal">
           Watch high-octane competitive highlights and mechanical freestyle montages by NLD's featured creators.
         </p>
       </div>
@@ -46,32 +46,32 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
       <div className="flex flex-wrap gap-4 mb-10">
         <button
           onClick={() => handleSelectCreator('Bob')}
-          className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 ${
+          className={`px-8 py-3.5 rounded-full text-sm font-extrabold font-['Outfit',sans-serif] tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 ${
             selectedCreator === 'Bob'
-              ? 'bg-cyan-500 text-black shadow-[0_0_25px_rgba(0,255,255,0.6)] scale-105'
+              ? 'bg-[#00ffff] text-black shadow-[0_0_25px_rgba(0,255,255,0.65)] scale-105'
               : 'bg-neutral-900/80 border border-neutral-800 text-neutral-300 hover:border-cyan-500/50 hover:text-white'
           }`}
         >
           <span>Bob</span>
-          <span className="text-[11px] opacity-80 font-normal">Freestyle Specialist</span>
+          <span className="text-[11px] opacity-80 font-semibold">Freestyle Specialist</span>
         </button>
 
         <button
           onClick={() => handleSelectCreator('Strazak')}
-          className={`px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 ${
+          className={`px-8 py-3.5 rounded-full text-sm font-extrabold font-['Outfit',sans-serif] tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 ${
             selectedCreator === 'Strazak'
-              ? 'bg-fuchsia-500 text-black shadow-[0_0_25px_rgba(255,0,255,0.6)] scale-105'
+              ? 'bg-[#ff00ff] text-black shadow-[0_0_25px_rgba(255,0,255,0.65)] scale-105'
               : 'bg-neutral-900/80 border border-neutral-800 text-neutral-300 hover:border-fuchsia-500/50 hover:text-white'
           }`}
         >
           <span>Strazak</span>
-          <span className="text-[11px] opacity-80 font-normal">Speed & Chaos</span>
+          <span className="text-[11px] opacity-80 font-semibold">Speed & Chaos</span>
         </button>
       </div>
 
       {/* Main Video Player: Rounded-3xl with Ambient Glow */}
       {activeVideo && (
-        <div className="mb-16 rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-4 sm:p-6 shadow-[0_0_40px_rgba(0,255,255,0.15)]">
+        <div className="mb-16 rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-4 sm:p-6 shadow-[0_0_45px_rgba(0,255,255,0.18)]">
           <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtube_video_id}?autoplay=0&rel=0&modestbranding=1`}
@@ -85,7 +85,7 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
           <div className="mt-6 px-2 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div className="min-w-0 max-w-3xl">
               <div className="flex items-center gap-3 text-xs font-semibold text-neutral-400 mb-2">
-                <span className="text-cyan-400">{activeVideo.creator_name}</span>
+                <span className="text-cyan-400 font-bold font-['Outfit',sans-serif]">{activeVideo.creator_name}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1">
                   <Eye className="w-3.5 h-3.5" />
@@ -97,10 +97,10 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
                   {activeVideo.duration || '04:15'}
                 </span>
               </div>
-              <h2 className="font-['Rajdhani',sans-serif] font-bold text-2xl sm:text-3xl md:text-4xl text-white uppercase tracking-tight">
+              <h2 className="font-['Outfit',sans-serif] font-black text-2xl sm:text-3xl md:text-4xl text-white uppercase tracking-tight">
                 {activeVideo.title}
               </h2>
-              <p className="mt-2 text-sm text-neutral-300 leading-relaxed">
+              <p className="mt-2 text-sm text-neutral-300 leading-relaxed font-normal">
                 {activeVideo.description}
               </p>
             </div>
@@ -109,7 +109,7 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
               href={activeVideo.youtube_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-2.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] text-xs font-bold uppercase tracking-wider text-white transition-all duration-300 shrink-0"
+              className="px-6 py-2.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] text-xs font-extrabold font-['Outfit',sans-serif] uppercase tracking-wider text-white transition-all duration-300 shrink-0"
             >
               Watch on YouTube
             </a>
@@ -119,7 +119,7 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
 
       {/* Grid of Older Videos */}
       <div>
-        <h3 className="text-lg font-bold text-white mb-6 font-['Rajdhani',sans-serif] uppercase tracking-wider">
+        <h3 className="text-lg font-black text-white mb-6 font-['Outfit',sans-serif] uppercase tracking-wider">
           More from {selectedCreator}
         </h3>
 
@@ -156,7 +156,7 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
                   <span className="text-xs font-semibold text-neutral-400 block mb-1">
                     {video.creator_name} • {video.views || '10K views'}
                   </span>
-                  <span className="font-['Rajdhani',sans-serif] font-bold text-lg text-white line-clamp-2 uppercase">
+                  <span className="font-['Outfit',sans-serif] font-bold text-lg text-white line-clamp-2 uppercase tracking-tight">
                     {video.title}
                   </span>
                 </div>
