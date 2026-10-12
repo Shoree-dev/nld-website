@@ -1,26 +1,83 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
+  --font-teko: var(--font-teko), "Teko", sans-serif;
+  --font-rajdhani: var(--font-rajdhani), "Rajdhani", sans-serif;
+  --font-inter: var(--font-inter), "Inter", sans-serif;
+  --color-void: #000000;
+  --color-neon-purple: #a855f7;
+  --color-neon-blue: #06b6d4;
+  --color-neon-orange: #f97316;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  background-color: #000000 !important;
+  color: #ffffff;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+::selection {
+  background-color: #a855f7;
+  color: #000000;
+}
+
+/* Ferrofluid morphing keyframes for pure solid matte organic blobs */
+@keyframes ferrofluidMorph {
+  0% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 58% 42% 38% 62% / 55% 65% 35% 45%;
+    transform: rotate(2deg) scale(1.02);
+  }
+  50% {
+    border-radius: 35% 65% 60% 40% / 40% 30% 70% 60%;
+    transform: rotate(-1deg) scale(0.98);
+  }
+  75% {
+    border-radius: 65% 35% 45% 55% / 60% 55% 45% 40%;
+    transform: rotate(1deg) scale(1.01);
+  }
+  100% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: rotate(0deg) scale(1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes ferrofluidBreathe {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.06) rotate(3deg);
+  }
+}
+
+.animate-ferrofluid {
+  animation: ferrofluidMorph 9s ease-in-out infinite alternate;
+}
+
+.animate-ferrofluid-fast {
+  animation: ferrofluidMorph 4.5s ease-in-out infinite alternate;
+}
+
+.animate-breathe {
+  animation: ferrofluidBreathe 6s ease-in-out infinite;
+}
+
+/* Stamp grunge effect for banned players */
+.stamp-revoked {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: #ef4444;
+  border: 3px solid #ef4444;
+  transform: rotate(-12deg);
 }
