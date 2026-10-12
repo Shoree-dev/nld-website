@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPlayerProfile, getLeaderboardEntries } from '@/lib/data';
-import { ShieldX, AlertTriangle, ArrowLeft, Trophy, Zap, Target, Star } from 'lucide-react';
+import { ShieldX, AlertTriangle, ArrowLeft, Trophy, Zap, Target, Star, Terminal } from 'lucide-react';
 
 interface ProfilePageProps {
   params: Promise<{ id: string }>;
@@ -23,152 +23,145 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const isBottomTen = rank >= bottomTenThreshold;
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-8 pb-32 select-none">
-      {/* Return to Leaderboard Link */}
-      <div className="mb-14">
+    <div className="w-full max-w-5xl mx-auto px-4 md:px-8 py-10 select-none">
+      {/* Return Link */}
+      <div className="mb-8">
         <Link
           href="/leaderboard"
-          className="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-[#ff00ff] transition-none border border-neutral-800 px-3 py-1.5 bg-black"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span>RETURN TO LEADERBOARD</span>
+          <ArrowLeft className="w-4 h-4" />
+          <span>[RETURN_TO_LEADERBOARD]</span>
         </Link>
       </div>
 
-      {/* Main Dossier Header floating in void */}
-      <div className="relative flex flex-col md:flex-row items-start md:items-end gap-10 md:gap-14 pb-16">
-        {/* Floating Avatar grounded by solid purple blob */}
-        <div className="relative shrink-0">
-          <div
-            className="absolute -inset-4 bg-[#a855f7] -z-10 animate-ferrofluid"
-            style={{ borderRadius: '45% 55% 65% 35% / 50% 45% 55% 50%' }}
-          />
-          <div className="relative w-36 h-36 md:w-52 md:h-52 rounded-full overflow-hidden ring-4 ring-black">
-            <Image
-              src={profile.avatar_url || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300&auto=format&fit=crop&q=80'}
-              alt={profile.username}
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          </div>
+      {/* Main Dossier Card (Sharp 2px Neon Border) */}
+      <div className="border-2 border-[#ff00ff] p-6 md:p-8 bg-black mb-8 relative">
+        {/* Corner notches */}
+        <div className="absolute -top-1 -left-1 w-2 h-2 bg-[#ff00ff]" />
+        <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#ff00ff]" />
+        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-[#ff00ff]" />
+        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#ff00ff]" />
 
-          {/* EASTER EGG: Red "LICENSE REVOKED" stamp overlay if banned */}
-          {isBanned && (
-            <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
-              <span className="stamp-revoked text-lg md:text-xl bg-black/95 px-4 py-1.5 shadow-2xl">
-                LICENSE REVOKED
-              </span>
-            </div>
-          )}
+        <div className="flex items-center justify-between border-b border-neutral-800 pb-4 mb-6">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#0055ff] tracking-widest uppercase">
+            <Terminal className="w-4 h-4" />
+            <span>PILOT_DOSSIER // SECTOR_RECORD</span>
+          </div>
+          <span className="text-xs font-mono text-neutral-500">
+            DISCORD_ID: {profile.discord_id}
+          </span>
         </div>
 
-        {/* Name, Roles, and Identification */}
-        <div className="flex-1 flex flex-col">
-          <div className="flex items-center gap-4 flex-wrap mb-2">
-            <span className="text-xs font-mono tracking-widest uppercase text-neutral-400">
-              DISCORD ID: {profile.discord_id}
-            </span>
+        <div className="flex flex-col md:flex-row items-start gap-6 md:gap-8">
+          {/* Avatar with Sharp Frame */}
+          <div className="relative shrink-0">
+            <div className="relative w-28 h-28 md:w-36 md:h-36 border-2 border-white overflow-hidden bg-neutral-900">
+              <Image
+                src={profile.avatar_url || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300&auto=format&fit=crop&q=80'}
+                alt={profile.username}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
 
-            {/* EASTER EGG: Student Driver badge */}
-            {isBottomTen && !isBanned && (
-              <span
-                className="text-xs uppercase font-mono font-black px-3 py-1 bg-yellow-400 text-black tracking-widest inline-flex items-center gap-1.5"
-                style={{ borderRadius: '14px 6px 14px 6px' }}
-              >
-                <AlertTriangle className="w-3.5 h-3.5 stroke-[3]" />
-                STUDENT DRIVER
-              </span>
-            )}
-
+            {/* EASTER EGG: Banned Stamp */}
             {isBanned && (
-              <span className="text-xs uppercase font-mono font-black px-3 py-1 bg-red-600 text-white tracking-widest inline-flex items-center gap-1.5">
-                <ShieldX className="w-3.5 h-3.5" />
-                DISQUALIFIED
-              </span>
+              <div className="mt-2 text-center">
+                <span className="px-2 py-1 border border-red-500 bg-red-950 text-red-400 font-bold text-[10px] uppercase font-mono block">
+                  [REVOKED // DISQUALIFIED]
+                </span>
+              </div>
             )}
           </div>
 
-          <h1 className="font-['Teko',sans-serif] font-black text-7xl md:text-9xl text-white uppercase leading-none tracking-tight">
-            {profile.username}
-          </h1>
+          {/* Pilot Info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 flex-wrap mb-2">
+              <h1 className="text-2xl sm:text-4xl font-black uppercase text-white font-mono tracking-tight">
+                {profile.username}
+              </h1>
 
-          {/* Roles displayed without containers */}
-          <div className="flex flex-wrap gap-3 mt-4">
-            {profile.roles?.map((role, idx) => (
-              <span
-                key={idx}
-                className="font-mono text-xs uppercase tracking-widest px-3 py-1 text-black font-bold bg-[#06b6d4]"
-                style={{ borderRadius: '30px 10px 30px 10px' }}
-              >
-                {role}
-              </span>
-            ))}
+              {isBottomTen && !isBanned && (
+                <span className="px-2 py-0.5 border border-yellow-400 bg-black text-yellow-400 text-xs font-bold font-mono inline-flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  [STUDENT_DRIVER]
+                </span>
+              )}
+            </div>
+
+            <p className="text-xs sm:text-sm text-neutral-400 font-mono mb-4 leading-relaxed">
+              {profile.bio || 'Active competitive driver in the No Licensed Drivers Rocket League circuit.'}
+            </p>
+
+            {/* Roles Chips */}
+            <div className="flex flex-wrap gap-2">
+              {profile.roles?.map((role, idx) => (
+                <span
+                  key={idx}
+                  className="px-2 py-0.5 border border-neutral-700 bg-black text-[#0055ff] text-[11px] font-mono uppercase font-bold"
+                >
+                  [{role}]
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Driver Stats Grid (Zero Containers, Strict Typography Scale) */}
-      <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-16">
-        <div>
-          <span className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
-            <Trophy className="w-4 h-4 text-[#a855f7]" />
-            LEADERBOARD RANK
+      {/* Telemetry Stats Grid (Sharp 1px Borders) */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
+            <Trophy className="w-3.5 h-3.5 text-[#ff00ff]" />
+            CURRENT_RANK
           </span>
-          <span className="font-['Teko',sans-serif] text-7xl md:text-8xl font-black text-white leading-none">
+          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
             #{rank}
           </span>
         </div>
 
-        <div>
-          <span className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
-            <Star className="w-4 h-4 text-[#06b6d4]" />
-            TOTAL SCORE
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
+            <Star className="w-3.5 h-3.5 text-[#0055ff]" />
+            TOTAL_SCORE
           </span>
-          <span className="font-['Teko',sans-serif] text-7xl md:text-8xl font-black text-[#06b6d4] leading-none">
-            {leaderboardEntry?.total_score || 0}
+          <span className="text-2xl sm:text-3xl font-black text-[#0055ff] font-mono">
+            {leaderboardEntry?.total_score || 0} PTS
           </span>
         </div>
 
-        <div>
-          <span className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
-            <Target className="w-4 h-4 text-[#a855f7]" />
-            PLACEMENT POINTS
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
+            <Target className="w-3.5 h-3.5 text-neutral-400" />
+            PLACEMENT_PTS
           </span>
-          <span className="font-['Teko',sans-serif] text-7xl md:text-8xl font-black text-white leading-none">
+          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
             {leaderboardEntry?.placement_points || 0}
           </span>
         </div>
 
-        <div>
-          <span className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
-            <Zap className="w-4 h-4 text-[#06b6d4]" />
-            MVP POINTS
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
+            <Zap className="w-3.5 h-3.5 text-[#ff00ff]" />
+            MVP_POINTS
           </span>
-          <span className="font-['Teko',sans-serif] text-7xl md:text-8xl font-black text-white leading-none">
+          <span className="text-2xl sm:text-3xl font-black text-[#ff00ff] font-mono">
             {leaderboardEntry?.mvp_points || 0}
           </span>
         </div>
       </div>
 
-      {/* Driver Biography & Setup in Void */}
-      <div className="mt-24 max-w-3xl">
-        <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-4 block">
-          DRIVER TELEMETRY & BIO
-        </span>
-        <p className="text-2xl md:text-3xl font-['Rajdhani',sans-serif] font-bold text-neutral-200 leading-relaxed">
-          {profile.bio || 'Active competitive driver in the No Licensed Drivers Rocket League circuit.'}
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-12 font-mono text-sm uppercase tracking-wider text-neutral-400">
-          <div>
-            <span className="text-neutral-400 block text-xs">FAVORITE CHASSIS</span>
-            <span className="text-white font-bold">{profile.favorite_car || 'Octane'}</span>
-          </div>
-          <div>
-            <span className="text-neutral-400 block text-xs">RANK TIER</span>
-            <span className="text-white font-bold">{profile.rank_tier || 'Grand Champion'}</span>
-          </div>
+      {/* Specs Panel */}
+      <div className="border border-neutral-800 p-4 bg-black flex flex-wrap gap-8 text-xs font-mono">
+        <div>
+          <span className="text-neutral-500 block text-[10px]">CHASSIS_SPEC</span>
+          <span className="text-white font-bold">{profile.favorite_car || 'Octane'}</span>
+        </div>
+        <div>
+          <span className="text-neutral-500 block text-[10px]">TIER_CLASSIFICATION</span>
+          <span className="text-white font-bold">{profile.rank_tier || 'Grand Champion'}</span>
         </div>
       </div>
     </div>

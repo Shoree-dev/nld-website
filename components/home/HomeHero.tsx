@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { VideoItem } from '@/lib/types';
-import { Flame, ArrowUpRight } from 'lucide-react';
+import { Zap, Radio } from 'lucide-react';
 
 interface HomeHeroProps {
   featuredVideo: VideoItem | null;
@@ -15,143 +13,104 @@ export default function HomeHero({
   featuredVideo,
   discordInviteUrl = 'https://discord.gg',
 }: HomeHeroProps) {
-  const [isCtaHovered, setIsCtaHovered] = useState(false);
-
   return (
-    <div className="relative w-full flex flex-col items-center justify-center pt-8 pb-32 px-6 md:px-12 select-none overflow-hidden">
-      {/* 1. Dynamic Alert Banner: ONLY if a new featured montage exists */}
+    <div className="w-full max-w-5xl mx-auto px-4 md:px-8 py-12 md:py-20 flex flex-col items-center text-center select-none">
+      {/* 1. Boxed Dynamic Alert Banner (If new montage exists) */}
       {featuredVideo && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: 'spring', stiffness: 120, damping: 14 }}
-          className="mb-14 relative z-30"
-        >
+        <div className="mb-10 w-full max-w-2xl">
           <Link
             href="/creators"
-            className="group relative inline-flex items-center gap-3 py-2 px-6 text-black uppercase tracking-wider font-mono text-xs md:text-sm font-bold"
+            className="block border border-[#0055ff] bg-black p-2.5 text-xs text-neutral-300 hover:border-[#ff00ff] hover:text-[#ff00ff] transition-none group"
           >
-            {/* Solid matte neon blue blob backing */}
-            <div
-              className="absolute inset-0 bg-[#06b6d4] -z-10 group-hover:scale-105 transition-transform"
-              style={{ borderRadius: '50% 50% 45% 55% / 40% 60% 40% 60%' }}
-            />
-            <Flame className="w-4 h-4 fill-black stroke-black animate-pulse" />
-            <span>
-              🔥 NEW MONTAGE: {featuredVideo.creator_name} - {featuredVideo.title}
-            </span>
-            <ArrowUpRight className="w-4 h-4 stroke-[3] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <div className="flex items-center justify-center gap-2 flex-wrap">
+              <span className="w-2 h-2 bg-[#ff00ff] inline-block animate-pulse" />
+              <span className="text-[#ff00ff] font-bold">[NEW_DROP]:</span>
+              <span className="font-bold truncate max-w-md">
+                {featuredVideo.creator_name} - {featuredVideo.title}
+              </span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                [PRESS TO VIEW]
+              </span>
+            </div>
           </Link>
-        </motion.div>
+        </div>
       )}
 
-      {/* 2. Hero Section: Pure Black Void & Massive Kinetic Typography */}
-      <div className="relative flex flex-col items-center justify-center text-center my-12 md:my-20">
-        {/* Solid Matte Purple Blob Breathing Behind the Text */}
-        <motion.div
-          className="absolute -z-10 pointer-events-none w-[340px] h-[260px] sm:w-[500px] sm:h-[380px] md:w-[750px] md:h-[520px] bg-[#a855f7] animate-ferrofluid"
-          style={{
-            borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%',
-          }}
-          animate={{
-            scale: [1, 1.05, 0.98, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
+      {/* 2. Constrained, Centered Title & Brand */}
+      <div className="border-2 border-[#ff00ff] p-6 md:p-12 w-full max-w-3xl bg-black mb-10 relative">
+        {/* Corner Accent notches */}
+        <div className="absolute -top-1 -left-1 w-2.5 h-2.5 bg-[#ff00ff]" />
+        <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#ff00ff]" />
+        <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 bg-[#ff00ff]" />
+        <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-[#ff00ff]" />
 
-        {/* Massive Kinetic Typography */}
-        <h1 className="font-['Teko',sans-serif] font-black text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] leading-[0.82] tracking-tighter uppercase text-white drop-shadow-none">
+        <div className="flex items-center justify-center gap-2 mb-4 text-xs tracking-widest text-[#0055ff] font-bold">
+          <Radio className="w-4 h-4 animate-pulse" />
+          <span>RL_UNDERGROUND_SECTOR_01</span>
+        </div>
+
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase leading-none font-mono">
           NO LICENSED
           <br />
-          <span className="text-white hover:text-black transition-colors duration-300">
-            DRIVERS
-          </span>
+          <span className="text-[#ff00ff]">DRIVERS</span>
         </h1>
 
-        <p className="mt-8 max-w-2xl text-base md:text-xl font-mono text-neutral-400 uppercase tracking-[0.25em]">
-          CHAOTIC FREESTYLE & COMPETITIVE ROCKET LEAGUE LEAGUE
+        <p className="mt-6 text-xs sm:text-sm text-neutral-400 font-mono tracking-wider max-w-xl mx-auto">
+          HIGH-OCTANE FREESTYLE // ZERO BRAKING PERMITTED // WEEKLY ARCADE SHOWDOWNS
         </p>
       </div>
 
-      {/* 3. CTA: Giant text "Join our Discord" with snapping blue ferrofluid blob */}
-      <div className="mt-12 md:mt-20 relative z-20">
+      {/* 3. Retro Arcade "INSERT COIN / JOIN DISCORD" Button */}
+      <div className="mb-16">
         <a
           href={discordInviteUrl}
           target="_blank"
           rel="noopener noreferrer"
-          onMouseEnter={() => setIsCtaHovered(true)}
-          onMouseLeave={() => setIsCtaHovered(false)}
-          className="relative inline-block py-6 px-12 md:px-20 group focus:outline-none"
+          className="inline-block px-8 md:px-14 py-4 md:py-5 border-2 border-[#ff00ff] bg-black text-[#ff00ff] hover:bg-[#ff00ff] hover:text-black hover-flicker-magenta transition-none focus:outline-none"
         >
-          {/* Framer Motion Blue Ferrofluid Blob Snaps Behind with Spring Physics */}
-          {isCtaHovered && (
-            <motion.div
-              layoutId="cta-blob"
-              className="absolute inset-0 bg-[#06b6d4] -z-10"
-              style={{
-                borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%',
-              }}
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1.08, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{
-                type: 'spring',
-                stiffness: 150,
-                damping: 15,
-                mass: 1,
-              }}
-            />
-          )}
-
-          <span
-            className={`font-['Teko',sans-serif] font-black text-4xl sm:text-6xl md:text-7xl uppercase tracking-wider transition-colors duration-200 ${
-              isCtaHovered ? 'text-black' : 'text-white group-hover:text-black'
-            }`}
-          >
-            JOIN OUR DISCORD
-          </span>
+          <div className="flex items-center gap-3 text-base sm:text-xl font-black tracking-widest uppercase font-mono">
+            <Zap className="w-5 h-5 fill-current" />
+            <span>[INSERT COIN // JOIN DISCORD]</span>
+            <span className="animate-cursor inline-block font-black">_</span>
+          </div>
         </a>
       </div>
 
-      {/* 4. Invisible Grid Alignment Community Micro-Stats (Zero Containers) */}
-      <div className="w-full max-w-6xl mt-36 grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-16 text-left">
-        <div>
-          <span className="block font-['Teko',sans-serif] font-black text-6xl md:text-8xl leading-none text-white">
+      {/* 4. Structured CSS Grid Micro-Stats (Sharp 1px Borders) */}
+      <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+            REG_PILOTS
+          </span>
+          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
             1,420+
           </span>
-          <span className="block mt-2 font-mono text-xs md:text-sm uppercase tracking-widest text-neutral-400">
-            REGISTERED DRIVERS
+        </div>
+
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+            BRACKETS_FREQ
+          </span>
+          <span className="text-2xl sm:text-3xl font-black text-[#0055ff] font-mono">
+            WEEKLY
           </span>
         </div>
 
-        <div>
-          <span className="block font-['Teko',sans-serif] font-black text-6xl md:text-8xl leading-none text-[#a855f7]">
-            04:00
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+            HIGH_SCORE
           </span>
-          <span className="block mt-2 font-mono text-xs md:text-sm uppercase tracking-widest text-neutral-400">
-            WEEKLY TOURNAMENTS
-          </span>
-        </div>
-
-        <div>
-          <span className="block font-['Teko',sans-serif] font-black text-6xl md:text-8xl leading-none text-[#06b6d4]">
-            920
-          </span>
-          <span className="block mt-2 font-mono text-xs md:text-sm uppercase tracking-widest text-neutral-400">
-            SEASON MVP RECORD
+          <span className="text-2xl sm:text-3xl font-black text-[#ff00ff] font-mono">
+            920 PTS
           </span>
         </div>
 
-        <div>
-          <span className="block font-['Teko',sans-serif] font-black text-6xl md:text-8xl leading-none text-white">
-            0%
+        <div className="border border-neutral-800 p-4 bg-black">
+          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+            BRAKES_ENABLED
           </span>
-          <span className="block mt-2 font-mono text-xs md:text-sm uppercase tracking-widest text-neutral-400">
-            BRAKING ENFORCED
+          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+            FALSE
           </span>
         </div>
       </div>

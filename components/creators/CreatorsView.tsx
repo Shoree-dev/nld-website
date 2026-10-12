@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { VideoItem } from '@/lib/types';
-import { Play, Eye, Clock } from 'lucide-react';
+import { Play, Eye, Clock, Terminal } from 'lucide-react';
 
 interface CreatorsViewProps {
   initialVideos: VideoItem[];
@@ -12,10 +11,7 @@ interface CreatorsViewProps {
 
 export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
   const [selectedCreator, setSelectedCreator] = useState<'Bob' | 'Strazak'>('Bob');
-  const [hoveredCreator, setHoveredCreator] = useState<'Bob' | 'Strazak' | null>(null);
 
-  // Active creator's videos
-  const activeCreator = hoveredCreator || selectedCreator;
   const creatorVideos = initialVideos.filter((v) => v.creator_name === selectedCreator);
   const [activeVideo, setActiveVideo] = useState<VideoItem>(
     creatorVideos[0] || initialVideos[0]
@@ -29,191 +25,150 @@ export default function CreatorsView({ initialVideos }: CreatorsViewProps) {
     }
   };
 
-  // Determine current ambient blob color based on active creator
-  // Blue for Bob, Purple for Strazak
-  const blobColor = activeCreator === 'Bob' ? '#06b6d4' : '#a855f7';
-
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 md:px-12 pt-8 pb-32 select-none relative overflow-hidden">
-      {/* Background Ambient Fluid Blob that shifts color dynamically */}
-      <motion.div
-        key={activeCreator}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-        className="fixed top-1/4 left-1/2 -translate-x-1/2 -z-30 pointer-events-none w-[500px] h-[400px] md:w-[900px] md:h-[650px] animate-ferrofluid"
-        style={{
-          backgroundColor: blobColor,
-          borderRadius: '45% 55% 60% 40% / 50% 40% 60% 50%',
-        }}
-      />
-
-      {/* Page Title */}
-      <div className="mb-12">
-        <span className="text-xs uppercase tracking-[0.3em] font-mono text-neutral-400">
-          NLD STUDIOS // CREATOR SHOWCASE
-        </span>
-        <h1 className="text-7xl sm:text-8xl md:text-9xl font-black font-['Teko',sans-serif] uppercase tracking-tighter leading-none text-white">
-          MONTAGE ARCHIVES
+    <div className="w-full max-w-6xl mx-auto px-4 md:px-8 py-10 select-none">
+      {/* Header */}
+      <div className="border-b border-neutral-800 pb-6 mb-10">
+        <div className="flex items-center gap-2 text-xs font-mono text-[#ff00ff] uppercase tracking-widest mb-1">
+          <Terminal className="w-4 h-4" />
+          <span>NLD_STUDIOS // ARCHIVES</span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-mono">
+          CREATOR SHOWCASE
         </h1>
       </div>
 
-      {/* TWO MASSIVE TYPOGRAPHY TRIGGERS ("BOB" and "STRAZAK") */}
-      <div className="flex flex-col md:flex-row items-baseline justify-start gap-8 md:gap-24 mb-16">
+      {/* CREATOR SELECTOR BUTTONS: Sharp Rectangular Tabs */}
+      <div className="flex flex-wrap gap-3 mb-8">
         <button
           onClick={() => handleSelectCreator('Bob')}
-          onMouseEnter={() => setHoveredCreator('Bob')}
-          onMouseLeave={() => setHoveredCreator(null)}
-          className="relative group focus:outline-none text-left"
+          className={`px-6 py-3 font-mono font-bold text-sm tracking-widest uppercase border-2 transition-none flex items-center gap-2 ${
+            selectedCreator === 'Bob'
+              ? 'border-[#0055ff] bg-[#0055ff] text-black font-black'
+              : 'border-neutral-800 bg-black text-neutral-400 hover:border-[#0055ff] hover:text-[#0055ff]'
+          }`}
         >
-          <span
-            className={`font-['Teko',sans-serif] font-black text-8xl sm:text-9xl md:text-[13rem] leading-none tracking-tighter uppercase transition-colors duration-300 ${
-              selectedCreator === 'Bob'
-                ? 'text-[#06b6d4]'
-                : 'text-neutral-500 hover:text-white'
-            }`}
-          >
-            BOB
-          </span>
-          <span className="block font-mono text-xs md:text-sm uppercase tracking-widest text-neutral-400 -mt-2">
-            FREESTYLE MECHANICS & RESETS
+          <span>[CREATOR: BOB]</span>
+          <span className="text-[10px] hidden sm:inline opacity-75">
+            // FREESTYLE_SPECIALIST
           </span>
         </button>
 
         <button
           onClick={() => handleSelectCreator('Strazak')}
-          onMouseEnter={() => setHoveredCreator('Strazak')}
-          onMouseLeave={() => setHoveredCreator(null)}
-          className="relative group focus:outline-none text-left"
+          className={`px-6 py-3 font-mono font-bold text-sm tracking-widest uppercase border-2 transition-none flex items-center gap-2 ${
+            selectedCreator === 'Strazak'
+              ? 'border-[#ff00ff] bg-[#ff00ff] text-black font-black'
+              : 'border-neutral-800 bg-black text-neutral-400 hover:border-[#ff00ff] hover:text-[#ff00ff]'
+          }`}
         >
-          <span
-            className={`font-['Teko',sans-serif] font-black text-8xl sm:text-9xl md:text-[13rem] leading-none tracking-tighter uppercase transition-colors duration-300 ${
-              selectedCreator === 'Strazak'
-                ? 'text-[#a855f7]'
-                : 'text-neutral-500 hover:text-white'
-            }`}
-          >
-            STRAZAK
-          </span>
-          <span className="block font-mono text-xs md:text-sm uppercase tracking-widest text-neutral-400 -mt-2">
-            SPEED, CHAOS & HIGH-RANK LOBBIES
+          <span>[CREATOR: STRAZAK]</span>
+          <span className="text-[10px] hidden sm:inline opacity-75">
+            // SPEED_&_CHAOS
           </span>
         </button>
       </div>
 
-      {/* PORTFOLIO VIEW: Massive, borderless edge-to-edge 16:9 YouTube player */}
-      <div className="w-full my-8">
-        <AnimatePresence mode="wait">
-          {activeVideo && (
-            <motion.div
-              key={activeVideo.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ type: 'spring', stiffness: 140, damping: 16 }}
-              className="flex flex-col gap-6"
+      {/* MAIN VIDEO PLAYER: Sharp Neon Bordered 16:9 Frame */}
+      {activeVideo && (
+        <div className="mb-14 border-2 border-[#0055ff] p-2 bg-black">
+          <div className="relative w-full aspect-video bg-black overflow-hidden border border-neutral-900">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtube_video_id}?autoplay=0&rel=0&modestbranding=1`}
+              title={activeVideo.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full border-0"
+            />
+          </div>
+
+          {/* Video Metadata Panel */}
+          <div className="p-4 md:p-6 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div className="min-w-0">
+              <div className="flex items-center gap-3 text-xs font-mono text-neutral-500 mb-2">
+                <span className="text-[#0055ff] font-bold">
+                  [{activeVideo.creator_name.toUpperCase()}]
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Eye className="w-3.5 h-3.5" />
+                  {activeVideo.views || '12K VIEWS'}
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5" />
+                  {activeVideo.duration || '04:15'}
+                </span>
+              </div>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black uppercase text-white font-mono">
+                {activeVideo.title}
+              </h2>
+              <p className="mt-2 text-xs sm:text-sm text-neutral-400 max-w-3xl font-mono leading-relaxed">
+                {activeVideo.description}
+              </p>
+            </div>
+
+            <a
+              href={activeVideo.youtube_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 border border-[#ff00ff] bg-black text-[#ff00ff] hover:bg-[#ff00ff] hover:text-black transition-none text-xs font-bold font-mono tracking-widest uppercase shrink-0"
             >
-              {/* Borderless 16:9 Player */}
-              <div className="relative w-full aspect-video bg-black overflow-hidden">
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtube_video_id}?autoplay=0&rel=0&modestbranding=1`}
-                  title={activeVideo.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full border-0"
-                />
-              </div>
+              [OPEN_YOUTUBE]
+            </a>
+          </div>
+        </div>
+      )}
 
-              {/* Video Title and Metadata in Void */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-4">
-                <div>
-                  <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-neutral-400 mb-2">
-                    <span className="text-white font-bold">{activeVideo.creator_name}</span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Eye className="w-3.5 h-3.5" />
-                      {activeVideo.views || '12.4K VIEWS'}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {activeVideo.duration || '04:20'}
-                    </span>
-                  </div>
-                  <h2 className="font-['Rajdhani',sans-serif] font-black text-3xl sm:text-5xl md:text-6xl uppercase tracking-tight text-white leading-tight">
-                    {activeVideo.title}
-                  </h2>
-                  <p className="mt-2 text-neutral-400 text-sm md:text-base max-w-3xl font-['Inter',sans-serif]">
-                    {activeVideo.description}
-                  </p>
-                </div>
+      {/* FLOATING GRID OF OLDER ARCHIVES (Sharp 1px Borders) */}
+      <div>
+        <div className="border-b border-neutral-800 pb-2 mb-6">
+          <span className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
+            MONTAGE_REEL // {selectedCreator.toUpperCase()}
+          </span>
+        </div>
 
-                <a
-                  href={activeVideo.youtube_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 relative group py-3 px-8 text-black font-black uppercase font-mono text-xs tracking-widest focus:outline-none"
-                >
-                  <div
-                    className="absolute inset-0 bg-[#06b6d4] -z-10 group-hover:scale-105 transition-transform"
-                    style={{ borderRadius: '50% 50% 45% 55% / 40% 60% 40% 60%' }}
-                  />
-                  <span>WATCH ON YOUTUBE</span>
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* FLOATING GRID OF OLDER VIDEO THUMBNAILS (Zero Containers) */}
-      <div className="mt-28">
-        <span className="text-xs uppercase tracking-[0.3em] font-mono text-neutral-400 block mb-8">
-          ARCHIVES // {selectedCreator.toUpperCase()} MONTAGE REEL
-        </span>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {creatorVideos.map((video) => {
             const isPlaying = activeVideo?.id === video.id;
             return (
               <button
                 key={video.id}
                 onClick={() => setActiveVideo(video)}
-                className="group relative flex flex-col text-left focus:outline-none"
+                className={`border p-3 text-left bg-black group transition-none flex flex-col justify-between ${
+                  isPlaying
+                    ? 'border-[#0055ff] bg-neutral-950'
+                    : 'border-neutral-800 hover:border-[#ff00ff]'
+                }`}
               >
-                {/* Floating Thumbnail with hover scale */}
-                <div className="relative aspect-video w-full overflow-hidden mb-4">
-                  <Image
-                    src={video.thumbnail_url}
-                    alt={video.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    unoptimized
-                  />
-                  {/* Play trigger overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                    <div
-                      className="w-14 h-14 bg-[#06b6d4] flex items-center justify-center text-black"
-                      style={{ borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%' }}
-                    >
-                      <Play className="w-6 h-6 fill-black ml-0.5" />
+                <div>
+                  <div className="relative aspect-video w-full overflow-hidden border border-neutral-900 mb-3">
+                    <Image
+                      src={video.thumbnail_url}
+                      alt={video.title}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-none">
+                      <div className="w-10 h-10 border border-[#ff00ff] bg-black text-[#ff00ff] flex items-center justify-center">
+                        <Play className="w-4 h-4 fill-current ml-0.5" />
+                      </div>
                     </div>
                   </div>
+
+                  <span className="text-[10px] text-neutral-500 font-mono block mb-1 uppercase">
+                    {video.creator_name} // {video.views || '10K VIEWS'}
+                  </span>
+                  <span className="font-mono font-bold text-sm text-white group-hover:text-[#ff00ff] line-clamp-2 uppercase">
+                    {video.title}
+                  </span>
                 </div>
 
-                <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                  {video.creator_name} • {video.views || '10K VIEWS'}
-                </span>
-                <span
-                  className={`font-['Rajdhani',sans-serif] font-bold text-xl md:text-2xl uppercase tracking-tight line-clamp-2 transition-colors ${
-                    isPlaying
-                      ? 'text-[#06b6d4]'
-                      : 'text-white group-hover:text-[#a855f7]'
-                  }`}
-                >
-                  {video.title}
-                </span>
+                <div className="pt-3 mt-3 border-t border-neutral-900 flex justify-between items-center text-[10px] text-neutral-500 font-mono">
+                  <span>{isPlaying ? '[PLAYING_NOW]' : '[READY]'}</span>
+                  <span>{video.duration || '04:00'}</span>
+                </div>
               </button>
             );
           })}
