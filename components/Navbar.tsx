@@ -4,8 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { loginWithDiscord, signOutAction } from '@/app/actions/auth';
-import { Shield, LogOut, User, Terminal } from 'lucide-react';
+import { Shield, LogOut, User, Disc as DiscordIcon, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
   user: {
@@ -23,67 +24,71 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const navLinks = [
-    { label: '[LEADERBOARD]', href: '/leaderboard' },
-    { label: '[NLD_STUDIOS]', href: '/creators' },
+    { label: 'Leaderboard', href: '/leaderboard' },
+    { label: 'NLD Studios', href: '/creators' },
   ];
 
   return (
-    <header className="w-full bg-black border-b border-[#ff00ff] select-none sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex items-center justify-between gap-4">
+    <header className="w-full sticky top-0 z-40 bg-[#020208]/80 backdrop-blur-xl border-b border-cyan-500/20 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between gap-6">
         {/* Brand / Logo */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="flex items-center gap-2 group focus:outline-none"
-          >
-            <span className="text-[#0055ff] font-black text-2xl tracking-tighter">
-              //
+        <Link href="/" className="flex items-center gap-3 group focus:outline-none">
+          <div className="flex items-center">
+            <span className="font-['Rajdhani',sans-serif] font-black text-3xl md:text-4xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-400 group-hover:scale-105 transition-transform duration-300">
+              NLD
             </span>
-            <span className="text-xl md:text-2xl font-black tracking-widest text-[#ff00ff] group-hover:text-white transition-none">
-              NLD.ARCADE
-            </span>
-          </Link>
-          <span className="hidden lg:inline-block text-[11px] text-neutral-500 font-mono tracking-wider">
-            [RL_CIRCUIT_v2.0]
+          </div>
+          <span className="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-widest text-neutral-400 px-2.5 py-0.5 rounded-full bg-neutral-900/80 border border-neutral-800">
+            Rocket League
           </span>
-        </div>
+        </Link>
 
         {/* Center Navigation Links */}
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-1.5 text-xs font-bold tracking-widest uppercase border transition-none ${
+                className={`text-sm font-semibold tracking-wider transition-all duration-200 relative py-1 ${
                   isActive
-                    ? 'bg-[#ff00ff] text-black border-[#ff00ff]'
-                    : 'text-neutral-300 border-transparent hover:border-[#ff00ff] hover:text-[#ff00ff]'
+                    ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(0,255,255,0.7)]'
+                    : 'text-neutral-300 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]'
                 }`}
               >
                 {link.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="navbar-indicator"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-fuchsia-500 to-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.8)] rounded-full"
+                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                  />
+                )}
               </Link>
             );
           })}
         </nav>
 
-        {/* Right Section: System Status & Auth */}
-        <div className="flex items-center gap-4">
-          {/* LED Arcade Online Indicator */}
-          <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 border border-neutral-800 text-[11px] font-mono tracking-wider text-neutral-400">
-            <span className="w-2 h-2 bg-[#0055ff] inline-block animate-pulse" />
-            <span>SYS_ONLINE: {onlineCount}</span>
+        {/* Right Section: Status Indicator & Auth Button */}
+        <div className="flex items-center gap-5">
+          {/* Online Players Pill */}
+          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/30 border border-cyan-500/30 text-xs font-semibold text-cyan-300 shadow-[0_0_15px_rgba(0,255,255,0.15)]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+            </span>
+            <span>{onlineCount} Online</span>
           </div>
 
-          {/* User Account / Discord Login */}
+          {/* User Profile or Discord Login */}
           {user ? (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2.5 px-2.5 py-1 border border-[#ff00ff] bg-black text-[#ff00ff] hover:bg-[#ff00ff] hover:text-black transition-none focus:outline-none"
+                className="flex items-center gap-3 p-1 rounded-full bg-neutral-900/90 border border-neutral-700/80 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(0,255,255,0.4)] transition-all duration-300 focus:outline-none"
               >
-                <div className="relative w-5 h-5 overflow-hidden border border-black shrink-0">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-cyan-400/80 shadow-[0_0_10px_rgba(0,255,255,0.4)]">
                   {user.avatarUrl ? (
                     <Image
                       src={user.avatarUrl}
@@ -93,72 +98,82 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
                       unoptimized
                     />
                   ) : (
-                    <div className="w-full h-full bg-neutral-900 flex items-center justify-center text-[10px]">
+                    <div className="w-full h-full bg-neutral-800 flex items-center justify-center font-bold text-xs text-white">
                       {user.username.slice(0, 1)}
                     </div>
                   )}
                 </div>
-                <span className="text-xs font-bold tracking-wider uppercase max-w-[100px] truncate">
+                <span className="text-xs font-semibold text-white pr-1 max-w-[110px] truncate hidden sm:inline">
                   {user.username}
                 </span>
-                <span className="text-[10px]">▼</span>
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-400 pr-1 group-hover:rotate-180 transition-transform" />
               </button>
 
-              {/* Sharp Brutalist Dropdown */}
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-black border-2 border-[#ff00ff] p-4 z-50 flex flex-col gap-3">
-                  <div className="border-b border-neutral-800 pb-2">
-                    <span className="text-[10px] text-neutral-500 uppercase tracking-widest block">
-                      PILOT IDENTIFIER
-                    </span>
-                    <span className="text-sm font-bold text-white block truncate">
-                      {user.username}
-                    </span>
-                    <span className="text-[10px] text-neutral-400 font-mono">
-                      ID: {user.discordId}
-                    </span>
-                  </div>
-
-                  <Link
-                    href={`/profile/${user.discordId}`}
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-2 p-1.5 text-xs text-neutral-300 hover:bg-[#0055ff] hover:text-white transition-none"
+              {/* Modern Glassy Dropdown Menu */}
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+                    className="absolute right-0 mt-3 w-64 rounded-2xl bg-[#080814]/95 backdrop-blur-2xl border border-neutral-800 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.9)] z-50 flex flex-col gap-3"
                   >
-                    <User className="w-3.5 h-3.5" />
-                    <span>[PILOT_DOSSIER]</span>
-                  </Link>
+                    <div className="border-b border-neutral-800/80 pb-3">
+                      <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
+                        Signed in as
+                      </p>
+                      <p className="text-base font-bold text-white font-['Rajdhani',sans-serif] truncate">
+                        {user.username}
+                      </p>
+                      <p className="text-xs text-neutral-500 font-mono truncate">
+                        ID: {user.discordId}
+                      </p>
+                    </div>
 
-                  {user.isAdmin && (
-                    <Link
-                      href="/admin"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2 p-1.5 text-xs text-[#ff00ff] hover:bg-[#ff00ff] hover:text-black transition-none font-bold"
-                    >
-                      <Shield className="w-3.5 h-3.5" />
-                      <span>[SYS_ADMIN_CONSOLE]</span>
-                    </Link>
-                  )}
+                    <div className="flex flex-col gap-1.5">
+                      <Link
+                        href={`/profile/${user.discordId}`}
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+                      >
+                        <User className="w-4 h-4 text-cyan-400" />
+                        <span>Driver Profile</span>
+                      </Link>
 
-                  <form action={signOutAction} className="w-full pt-1 border-t border-neutral-800">
-                    <button
-                      type="submit"
-                      className="w-full flex items-center gap-2 p-1.5 text-xs text-red-500 hover:bg-red-600 hover:text-white transition-none text-left"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>[TERMINATE_SESSION]</span>
-                    </button>
-                  </form>
-                </div>
-              )}
+                      {user.isAdmin && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-fuchsia-400 hover:text-fuchsia-300 hover:bg-fuchsia-950/30 transition-colors"
+                        >
+                          <Shield className="w-4 h-4 text-fuchsia-400" />
+                          <span>Admin Dashboard</span>
+                        </Link>
+                      )}
+
+                      <form action={signOutAction} className="w-full pt-1">
+                        <button
+                          type="submit"
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-950/20 transition-colors text-left"
+                        >
+                          <LogOut className="w-4 h-4 text-red-400" />
+                          <span>Sign Out</span>
+                        </button>
+                      </form>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ) : (
             <form action={loginWithDiscord}>
               <button
                 type="submit"
-                className="px-3.5 py-1.5 text-xs font-bold tracking-widest uppercase border-2 border-[#0055ff] bg-black text-[#0055ff] hover:bg-[#0055ff] hover:text-black transition-none flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-full bg-[#00ffff] hover:bg-[#33ffff] text-black font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.6)] hover:shadow-[0_0_35px_rgba(0,255,255,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none"
               >
-                <Terminal className="w-3.5 h-3.5" />
-                <span>[CONNECT_DISCORD]</span>
+                <DiscordIcon className="w-4 h-4 fill-black" />
+                <span>Login with Discord</span>
               </button>
             </form>
           )}

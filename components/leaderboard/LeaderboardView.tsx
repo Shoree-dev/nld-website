@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { LeaderboardEntry } from '@/lib/types';
-import { Trophy, AlertTriangle, ShieldX, Terminal } from 'lucide-react';
+import { Trophy, AlertTriangle, ShieldX, Award, Sparkles } from 'lucide-react';
 
 interface LeaderboardViewProps {
   entries: LeaderboardEntry[];
@@ -17,37 +18,39 @@ export default function LeaderboardView({ entries }: LeaderboardViewProps) {
   const bottomTenThreshold = Math.max(1, Math.floor(entries.length * 0.9));
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 md:px-8 py-10 select-none">
-      {/* Page Title Header */}
-      <div className="border-b border-neutral-800 pb-6 mb-10">
-        <div className="flex items-center gap-2 text-xs font-mono text-[#0055ff] uppercase tracking-widest mb-1">
-          <Terminal className="w-4 h-4" />
-          <span>RL_ARCADE // TELEMETRY_RANKINGS</span>
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-mono">
-          LEADERBOARD // SEASON_01
+    <div className="w-full max-w-7xl mx-auto px-6 md:px-12 py-12 select-none">
+      {/* Header */}
+      <div className="mb-14 text-center md:text-left flex flex-col items-center md:items-start">
+        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/30 border border-cyan-500/30 text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-3">
+          <Sparkles className="w-3.5 h-3.5" />
+          Season 1 Standings
+        </span>
+        <h1 className="font-['Rajdhani',sans-serif] font-black text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-white leading-tight">
+          Tournament Leaderboard
         </h1>
+        <p className="mt-2 text-sm md:text-base text-neutral-400 max-w-xl">
+          Weekly participation, tournament placements, and MVP awards combined into official season rankings.
+        </p>
       </div>
 
-      {/* 1. TOP 3 PODIUM: Brutalist Rectangular Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+      {/* 1. TOP 3 PODIUM: Sleek Rounded-2xl Glowing Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 items-end">
         {/* RANK 2 */}
         {top2 && (
-          <Link
-            href={`/profile/${top2.discord_id}`}
-            className="border-2 border-[#0055ff] p-5 bg-black hover:bg-[#0055ff] hover:text-black group transition-none flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-xs font-bold text-[#0055ff] group-hover:text-black tracking-widest uppercase">
-                  [RANK_02]
+          <motion.div whileHover={{ y: -6 }} transition={{ duration: 0.2 }} className="order-2 md:order-1">
+            <Link
+              href={`/profile/${top2.discord_id}`}
+              className="block rounded-2xl border border-cyan-500/50 bg-[#070716]/90 backdrop-blur-xl p-6 shadow-[0_0_25px_rgba(0,255,255,0.25)] hover:shadow-[0_0_40px_rgba(0,255,255,0.5)] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-400/40 text-xs font-bold text-cyan-300">
+                  Rank 2
                 </span>
-                <span className="text-[10px] text-neutral-400 group-hover:text-black uppercase">
-                  RUNNER_UP
-                </span>
+                <span className="text-xs text-neutral-400 font-medium">Runner Up</span>
               </div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative w-12 h-12 border border-black overflow-hidden shrink-0">
+
+              <div className="flex items-center gap-4 mb-6">
+                <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.4)] shrink-0">
                   <Image
                     src={top2.avatar_url}
                     alt={top2.player_name}
@@ -57,44 +60,40 @@ export default function LeaderboardView({ entries }: LeaderboardViewProps) {
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-lg font-black uppercase truncate block text-white group-hover:text-black font-mono">
+                  <h3 className="font-['Rajdhani',sans-serif] font-bold text-2xl text-white truncate">
                     {top2.player_name}
-                  </span>
-                  <span className="text-xs text-neutral-500 group-hover:text-black font-mono block">
-                    ID: {top2.discord_id}
-                  </span>
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-mono">ID: {top2.discord_id}</p>
                 </div>
               </div>
-            </div>
-            <div className="border-t border-neutral-800 group-hover:border-black pt-3 flex justify-between items-baseline">
-              <span className="text-xs text-neutral-400 group-hover:text-black uppercase">
-                TOTAL_PTS:
-              </span>
-              <span className="text-2xl font-black text-white group-hover:text-black font-mono">
-                {top2.total_score}
-              </span>
-            </div>
-          </Link>
+
+              <div className="border-t border-neutral-800/80 pt-4 flex items-baseline justify-between">
+                <span className="text-xs font-medium text-neutral-400">Total Score</span>
+                <span className="font-['Rajdhani',sans-serif] font-bold text-3xl text-cyan-400">
+                  {top2.total_score} <span className="text-sm text-neutral-500">PTS</span>
+                </span>
+              </div>
+            </Link>
+          </motion.div>
         )}
 
         {/* RANK 1 (Apex Leader) */}
         {top1 && (
-          <Link
-            href={`/profile/${top1.discord_id}`}
-            className="border-2 border-[#ff00ff] p-5 bg-black hover:bg-[#ff00ff] hover:text-black group transition-none flex flex-col justify-between md:-mt-2"
-          >
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-xs font-bold text-[#ff00ff] group-hover:text-black tracking-widest uppercase flex items-center gap-1.5">
-                  <Trophy className="w-3.5 h-3.5" />
-                  [RANK_01 // APEX]
+          <motion.div whileHover={{ y: -8 }} transition={{ duration: 0.2 }} className="order-1 md:order-2 md:-mt-8">
+            <Link
+              href={`/profile/${top1.discord_id}`}
+              className="block rounded-3xl border-2 border-fuchsia-500 bg-[#09071a]/95 backdrop-blur-2xl p-7 shadow-[0_0_35px_rgba(255,0,255,0.45)] hover:shadow-[0_0_55px_rgba(255,0,255,0.7)] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-fuchsia-950/70 border border-fuchsia-400 text-xs font-bold text-fuchsia-300 shadow-[0_0_15px_rgba(255,0,255,0.4)]">
+                  <Trophy className="w-3.5 h-3.5 text-fuchsia-300" />
+                  Apex Champion
                 </span>
-                <span className="text-[10px] text-neutral-400 group-hover:text-black uppercase font-bold">
-                  CHAMPION
-                </span>
+                <span className="text-xs text-fuchsia-400 font-semibold">Rank 1</span>
               </div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="relative w-14 h-14 border-2 border-black overflow-hidden shrink-0">
+
+              <div className="flex items-center gap-5 mb-6">
+                <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-fuchsia-500 shadow-[0_0_20px_rgba(255,0,255,0.6)] shrink-0">
                   <Image
                     src={top1.avatar_url}
                     alt={top1.player_name}
@@ -104,43 +103,39 @@ export default function LeaderboardView({ entries }: LeaderboardViewProps) {
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-xl font-black uppercase truncate block text-white group-hover:text-black font-mono">
+                  <h3 className="font-['Rajdhani',sans-serif] font-black text-3xl text-white truncate">
                     {top1.player_name}
-                  </span>
-                  <span className="text-xs text-neutral-500 group-hover:text-black font-mono block">
-                    ID: {top1.discord_id}
-                  </span>
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-mono">ID: {top1.discord_id}</p>
                 </div>
               </div>
-            </div>
-            <div className="border-t border-neutral-800 group-hover:border-black pt-3 flex justify-between items-baseline">
-              <span className="text-xs text-neutral-400 group-hover:text-black uppercase font-bold">
-                TOTAL_PTS:
-              </span>
-              <span className="text-3xl font-black text-[#ff00ff] group-hover:text-black font-mono">
-                {top1.total_score}
-              </span>
-            </div>
-          </Link>
+
+              <div className="border-t border-fuchsia-500/30 pt-4 flex items-baseline justify-between">
+                <span className="text-xs font-medium text-neutral-400">Total Score</span>
+                <span className="font-['Rajdhani',sans-serif] font-black text-4xl text-fuchsia-400 text-glow-magenta">
+                  {top1.total_score} <span className="text-base text-neutral-400">PTS</span>
+                </span>
+              </div>
+            </Link>
+          </motion.div>
         )}
 
         {/* RANK 3 */}
         {top3 && (
-          <Link
-            href={`/profile/${top3.discord_id}`}
-            className="border-2 border-[#0055ff] p-5 bg-black hover:bg-[#0055ff] hover:text-black group transition-none flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-xs font-bold text-[#0055ff] group-hover:text-black tracking-widest uppercase">
-                  [RANK_03]
+          <motion.div whileHover={{ y: -6 }} transition={{ duration: 0.2 }} className="order-3">
+            <Link
+              href={`/profile/${top3.discord_id}`}
+              className="block rounded-2xl border border-cyan-500/50 bg-[#070716]/90 backdrop-blur-xl p-6 shadow-[0_0_25px_rgba(0,255,255,0.25)] hover:shadow-[0_0_40px_rgba(0,255,255,0.5)] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-400/40 text-xs font-bold text-cyan-300">
+                  Rank 3
                 </span>
-                <span className="text-[10px] text-neutral-400 group-hover:text-black uppercase">
-                  PODIUM
-                </span>
+                <span className="text-xs text-neutral-400 font-medium">Podium</span>
               </div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative w-12 h-12 border border-black overflow-hidden shrink-0">
+
+              <div className="flex items-center gap-4 mb-6">
+                <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.4)] shrink-0">
                   <Image
                     src={top3.avatar_url}
                     alt={top3.player_name}
@@ -150,114 +145,117 @@ export default function LeaderboardView({ entries }: LeaderboardViewProps) {
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-lg font-black uppercase truncate block text-white group-hover:text-black font-mono">
+                  <h3 className="font-['Rajdhani',sans-serif] font-bold text-2xl text-white truncate">
                     {top3.player_name}
-                  </span>
-                  <span className="text-xs text-neutral-500 group-hover:text-black font-mono block">
-                    ID: {top3.discord_id}
-                  </span>
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-mono">ID: {top3.discord_id}</p>
                 </div>
               </div>
-            </div>
-            <div className="border-t border-neutral-800 group-hover:border-black pt-3 flex justify-between items-baseline">
-              <span className="text-xs text-neutral-400 group-hover:text-black uppercase">
-                TOTAL_PTS:
-              </span>
-              <span className="text-2xl font-black text-white group-hover:text-black font-mono">
-                {top3.total_score}
-              </span>
-            </div>
-          </Link>
+
+              <div className="border-t border-neutral-800/80 pt-4 flex items-baseline justify-between">
+                <span className="text-xs font-medium text-neutral-400">Total Score</span>
+                <span className="font-['Rajdhani',sans-serif] font-bold text-3xl text-cyan-400">
+                  {top3.total_score} <span className="text-sm text-neutral-500">PTS</span>
+                </span>
+              </div>
+            </Link>
+          </motion.div>
         )}
       </div>
 
-      {/* 2. SEASONAL LIST (Sharp Structured CSS Grid) */}
+      {/* 2. SEASONAL LIST: Clean Modern Cards */}
       <div className="w-full">
         {/* Table Header */}
-        <div className="grid grid-cols-12 gap-2 px-4 py-2 border border-neutral-800 bg-neutral-950 text-[11px] font-mono text-neutral-500 uppercase tracking-wider mb-2">
-          <div className="col-span-2 md:col-span-1">[POS]</div>
-          <div className="col-span-5 md:col-span-4">[PILOT]</div>
-          <div className="hidden md:block col-span-2 text-right">[PARTICIPATION]</div>
-          <div className="hidden md:block col-span-2 text-right">[PLACEMENT]</div>
-          <div className="hidden md:block col-span-1 text-right">[MVP]</div>
-          <div className="col-span-5 md:col-span-2 text-right">[TOTAL]</div>
+        <div className="grid grid-cols-12 gap-4 px-6 py-3 text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3">
+          <div className="col-span-1">Rank</div>
+          <div className="col-span-5 md:col-span-4">Driver</div>
+          <div className="hidden md:block col-span-2 text-right">Participation</div>
+          <div className="hidden md:block col-span-2 text-right">Placement</div>
+          <div className="hidden md:block col-span-1 text-right">MVP</div>
+          <div className="col-span-6 md:col-span-2 text-right">Total Score</div>
         </div>
 
         {/* Rows */}
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2.5">
           {entries.map((entry, index) => {
             const rankNum = entry.rank ?? index + 1;
             const isBottomTen = rankNum >= bottomTenThreshold;
 
             return (
-              <Link
+              <motion.div
                 key={entry.id}
-                href={`/profile/${entry.discord_id}`}
-                className="grid grid-cols-12 gap-2 items-center px-4 py-3 border border-neutral-800 bg-black hover:border-[#ff00ff] hover:bg-[#ff00ff] hover:text-black group transition-none"
+                whileHover={{ scale: 1.01 }}
+                transition={{ duration: 0.15 }}
               >
-                {/* Rank Number */}
-                <div className="col-span-2 md:col-span-1 font-mono font-bold text-sm text-neutral-400 group-hover:text-black">
-                  #{rankNum < 10 ? `0${rankNum}` : rankNum}
-                </div>
-
-                {/* Pilot Name, Avatar & Status Badges */}
-                <div className="col-span-5 md:col-span-4 flex items-center gap-3 min-w-0">
-                  <div className="relative w-8 h-8 border border-neutral-700 group-hover:border-black shrink-0 overflow-hidden">
-                    <Image
-                      src={entry.avatar_url}
-                      alt={entry.player_name}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
+                <Link
+                  href={`/profile/${entry.discord_id}`}
+                  className="grid grid-cols-12 gap-4 items-center px-6 py-4 rounded-xl border border-neutral-800/80 bg-[#060614]/70 backdrop-blur-md hover:border-cyan-400/50 hover:bg-[#0b0b22] hover:shadow-[0_0_20px_rgba(0,255,255,0.2)] transition-all duration-300"
+                >
+                  {/* Rank */}
+                  <div className="col-span-1 font-['Rajdhani',sans-serif] font-bold text-xl text-neutral-300">
+                    #{rankNum}
                   </div>
 
-                  <div className="min-w-0 flex flex-col">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-mono font-bold text-sm sm:text-base uppercase truncate text-white group-hover:text-black">
-                        {entry.player_name}
-                      </span>
-
-                      {/* EASTER EGG: Student Driver Badge */}
-                      {isBottomTen && !entry.is_banned && (
-                        <span className="px-1.5 py-0.5 border border-yellow-400 text-yellow-400 group-hover:border-black group-hover:text-black text-[9px] uppercase font-bold inline-flex items-center gap-1">
-                          <AlertTriangle className="w-2.5 h-2.5" />
-                          STUDENT
-                        </span>
-                      )}
-
-                      {/* EASTER EGG: Banned Badge */}
-                      {entry.is_banned && (
-                        <span className="px-1.5 py-0.5 border border-red-500 bg-red-950 text-red-400 group-hover:bg-red-600 group-hover:text-white text-[9px] uppercase font-bold inline-flex items-center gap-1">
-                          <ShieldX className="w-2.5 h-2.5" />
-                          REVOKED
-                        </span>
-                      )}
+                  {/* Driver Name & Avatar + Badges */}
+                  <div className="col-span-5 md:col-span-4 flex items-center gap-3.5 min-w-0">
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden ring-1 ring-neutral-700 shrink-0">
+                      <Image
+                        src={entry.avatar_url}
+                        alt={entry.player_name}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
                     </div>
-                    <span className="text-[10px] text-neutral-500 group-hover:text-black font-mono">
-                      ID: {entry.discord_id}
-                    </span>
+
+                    <div className="min-w-0 flex flex-col">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-['Rajdhani',sans-serif] font-bold text-lg text-white truncate">
+                          {entry.player_name}
+                        </span>
+
+                        {/* EASTER EGG: Student Driver Badge */}
+                        {isBottomTen && !entry.is_banned && (
+                          <span className="px-2.5 py-0.5 rounded-full bg-amber-950/60 border border-amber-500/50 text-amber-300 text-[11px] font-semibold flex items-center gap-1 shadow-[0_0_10px_rgba(245,158,11,0.3)]">
+                            <AlertTriangle className="w-3 h-3" />
+                            Student Driver
+                          </span>
+                        )}
+
+                        {/* EASTER EGG: Banned Badge */}
+                        {entry.is_banned && (
+                          <span className="px-2.5 py-0.5 rounded-full bg-red-950/80 border border-red-500/60 text-red-400 text-[11px] font-bold flex items-center gap-1 shadow-[0_0_10px_rgba(239,68,68,0.4)]">
+                            <ShieldX className="w-3 h-3" />
+                            License Revoked
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-xs text-neutral-500 font-mono">ID: {entry.discord_id}</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Points */}
-                <div className="hidden md:block col-span-2 text-right font-mono text-sm text-neutral-400 group-hover:text-black">
-                  {entry.participation_points} PTS
-                </div>
+                  {/* Breakdown */}
+                  <div className="hidden md:block col-span-2 text-right text-sm font-semibold text-neutral-300">
+                    {entry.participation_points} <span className="text-xs text-neutral-500">pts</span>
+                  </div>
 
-                <div className="hidden md:block col-span-2 text-right font-mono text-sm text-neutral-400 group-hover:text-black">
-                  {entry.placement_points} PTS
-                </div>
+                  <div className="hidden md:block col-span-2 text-right text-sm font-semibold text-neutral-300">
+                    {entry.placement_points} <span className="text-xs text-neutral-500">pts</span>
+                  </div>
 
-                <div className="hidden md:block col-span-1 text-right font-mono text-sm text-neutral-400 group-hover:text-black">
-                  {entry.mvp_points}
-                </div>
+                  <div className="hidden md:block col-span-1 text-right text-sm font-semibold text-neutral-300">
+                    {entry.mvp_points}
+                  </div>
 
-                {/* Total Score */}
-                <div className="col-span-5 md:col-span-2 text-right font-mono font-black text-base sm:text-lg text-[#0055ff] group-hover:text-black">
-                  {entry.total_score} PTS
-                </div>
-              </Link>
+                  {/* Total Score */}
+                  <div className="col-span-6 md:col-span-2 text-right">
+                    <span className="font-['Rajdhani',sans-serif] font-bold text-2xl text-cyan-400">
+                      {entry.total_score}
+                    </span>
+                    <span className="text-xs font-semibold text-neutral-500 ml-1">PTS</span>
+                  </div>
+                </Link>
+              </motion.div>
             );
           })}
         </div>

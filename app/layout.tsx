@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Mono } from 'next/font/google';
+import { Rajdhani, Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,17 +7,23 @@ import ToastNotifier from '@/components/ui/ToastNotifier';
 import { getCurrentUser } from '@/lib/auth/admin';
 import { Suspense } from 'react';
 
-const spaceMono = Space_Mono({
+const rajdhani = Rajdhani({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-space-mono',
+  weight: ['500', '600', '700'],
+  variable: '--font-rajdhani',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'NO LICENSED DRIVERS // CYBERPUNK ARCADE',
+  title: 'No Licensed Drivers | Official Rocket League Community',
   description:
-    'NLD Rocket League Underground Circuit. Tournaments, Leaderboard, and Studios.',
+    'The premier chaotic Rocket League community. Tournaments, Season Leaderboard, and Freestyle Montages.',
 };
 
 export default async function RootLayout({
@@ -28,17 +34,17 @@ export default async function RootLayout({
   const user = await getCurrentUser();
 
   return (
-    <html lang="en" className={`${spaceMono.variable} bg-black text-white`}>
-      <body className="min-h-screen bg-black text-white flex flex-col font-mono antialiased overflow-x-hidden selection:bg-[#ff00ff] selection:text-black">
-        {/* Retro CRT Scanline Overlay */}
-        <div className="fixed inset-0 pointer-events-none z-50 crt-scanlines" />
-
+    <html
+      lang="en"
+      className={`${rajdhani.variable} ${inter.variable} bg-[#020208] text-white selection:bg-[#ff00ff] selection:text-black`}
+    >
+      <body className="min-h-screen bg-[#020208] text-white flex flex-col font-sans antialiased overflow-x-hidden">
         <Suspense fallback={null}>
           <ToastNotifier />
         </Suspense>
 
         <Navbar user={user} onlineCount={92} />
-        <main className="flex-1 w-full bg-black">{children}</main>
+        <main className="flex-1 w-full">{children}</main>
         <Footer />
       </body>
     </html>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { LeaderboardEntry } from '@/lib/types';
 import { updateLeaderboardPointsAction, addNewVideoAction } from '@/app/actions/admin';
-import { Shield, Send, CheckCircle2, Video, Trophy, Terminal } from 'lucide-react';
+import { Shield, Send, CheckCircle2, Video, Trophy, Sparkles } from 'lucide-react';
 
 interface AdminDashboardProps {
   initialEntries: LeaderboardEntry[];
@@ -59,10 +59,10 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
       formData.set('announce', announceLeaderboard ? 'true' : 'false');
 
       await updateLeaderboardPointsAction(formData);
-      setLeaderboardStatus('[SUCCESS: TELEMETRY UPDATED & ANNOUNCED]');
+      setLeaderboardStatus('Leaderboard saved and announcement sent to Discord!');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error updating leaderboard';
-      setLeaderboardStatus(`[ERR: ${msg}]`);
+      setLeaderboardStatus(`Error: ${msg}`);
     } finally {
       setLoading(false);
     }
@@ -82,138 +82,138 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
       formData.set('announce', announceVideo ? 'true' : 'false');
 
       await addNewVideoAction(formData);
-      setVideoStatus('[SUCCESS: MONTAGE BROADCASTED TO ARCHIVES]');
+      setVideoStatus('Video published and broadcasted to Discord!');
       setVideoTitle('');
       setYoutubeUrl('');
       setVideoDescription('');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error adding video';
-      setVideoStatus(`[ERR: ${msg}]`);
+      setVideoStatus(`Error: ${msg}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 md:px-8 py-10 select-none">
+    <div className="w-full max-w-7xl mx-auto px-6 md:px-12 py-12 select-none">
       {/* Header */}
-      <div className="border-b border-[#ff00ff] pb-6 mb-10">
-        <div className="flex items-center gap-2 text-xs font-mono text-[#ff00ff] uppercase tracking-widest mb-1 font-bold">
-          <Terminal className="w-4 h-4" />
-          <span>SYS_ADMIN // COMMAND_CONSOLE_v2</span>
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-mono">
-          ADMIN DASHBOARD
+      <div className="mb-14">
+        <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-fuchsia-950/40 border border-fuchsia-500/40 text-xs font-semibold text-fuchsia-300 uppercase tracking-wider mb-3">
+          <Shield className="w-3.5 h-3.5" />
+          Admin Command Console
+        </span>
+        <h1 className="font-['Rajdhani',sans-serif] font-black text-5xl sm:text-6xl uppercase tracking-tight text-white">
+          Admin Dashboard
         </h1>
-        <p className="mt-2 text-xs text-neutral-400 font-mono">
-          MANAGE LEADERBOARD SCORES & BROADCAST NLD STUDIOS MONTAGES VIA WEBHOOK
+        <p className="mt-2 text-sm text-neutral-400">
+          Update player tournament points and publish new NLD Studios creator montages directly to Discord.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* 1. LEADERBOARD MANAGER */}
-        <div className="border-2 border-[#ff00ff] p-6 bg-black">
-          <div className="flex items-center gap-2 mb-6 border-b border-neutral-800 pb-3">
-            <Trophy className="w-5 h-5 text-[#ff00ff]" />
-            <h2 className="text-xl font-bold uppercase tracking-wider text-white font-mono">
-              [LEADERBOARD_MANAGER]
+        <div className="rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-8 shadow-[0_0_35px_rgba(255,0,255,0.15)]">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-800">
+            <Trophy className="w-5 h-5 text-fuchsia-400" />
+            <h2 className="font-['Rajdhani',sans-serif] font-bold text-2xl text-white uppercase">
+              Leaderboard Manager
             </h2>
           </div>
 
-          <form onSubmit={handleSaveLeaderboard} className="flex flex-col gap-5">
+          <form onSubmit={handleSaveLeaderboard} className="flex flex-col gap-6">
             {/* Player Selection */}
             <div>
-              <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-1.5">
-                SELECT_PILOT:
+              <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+                Select Driver
               </label>
               <select
                 value={selectedPlayerId}
                 onChange={(e) => handlePlayerChange(e.target.value)}
-                className="w-full bg-black text-white font-mono text-sm py-2 px-3 border border-neutral-700 focus:border-[#ff00ff] focus:outline-none"
+                className="w-full bg-neutral-900/90 text-white font-medium text-sm py-3 px-4 rounded-xl border border-neutral-700 focus:border-fuchsia-500 focus:shadow-[0_0_20px_rgba(255,0,255,0.35)] focus:outline-none transition-all"
               >
                 {initialEntries.map((p) => (
-                  <option key={p.discord_id} value={p.discord_id} className="bg-black text-white">
-                    {p.player_name} (ID: {p.discord_id}) — Total: {p.total_score} PTS
+                  <option key={p.discord_id} value={p.discord_id} className="bg-neutral-900 text-white">
+                    {p.player_name} (ID: {p.discord_id}) — Total: {p.total_score} pts
                   </option>
                 ))}
               </select>
             </div>
 
             {/* Points Inputs */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                  PARTICIPATION
+                <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                  Participation
                 </label>
                 <input
                   type="number"
                   value={participation}
                   onChange={(e) => setParticipation(parseInt(e.target.value, 10) || 0)}
-                  className="w-full bg-black text-white font-mono text-sm py-1.5 px-2.5 border border-neutral-700 focus:border-[#ff00ff] focus:outline-none"
+                  className="w-full bg-neutral-900/90 text-white text-base font-bold py-2.5 px-3.5 rounded-xl border border-neutral-700 focus:border-fuchsia-500 focus:shadow-[0_0_15px_rgba(255,0,255,0.3)] focus:outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                  PLACEMENT
+                <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                  Placement
                 </label>
                 <input
                   type="number"
                   value={placement}
                   onChange={(e) => setPlacement(parseInt(e.target.value, 10) || 0)}
-                  className="w-full bg-black text-white font-mono text-sm py-1.5 px-2.5 border border-neutral-700 focus:border-[#ff00ff] focus:outline-none"
+                  className="w-full bg-neutral-900/90 text-white text-base font-bold py-2.5 px-3.5 rounded-xl border border-neutral-700 focus:border-fuchsia-500 focus:shadow-[0_0_15px_rgba(255,0,255,0.3)] focus:outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                  MVP
+                <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                  MVP Score
                 </label>
                 <input
                   type="number"
                   value={mvp}
                   onChange={(e) => setMvp(parseInt(e.target.value, 10) || 0)}
-                  className="w-full bg-black text-white font-mono text-sm py-1.5 px-2.5 border border-neutral-700 focus:border-[#ff00ff] focus:outline-none"
+                  className="w-full bg-neutral-900/90 text-white text-base font-bold py-2.5 px-3.5 rounded-xl border border-neutral-700 focus:border-fuchsia-500 focus:shadow-[0_0_15px_rgba(255,0,255,0.3)] focus:outline-none transition-all"
                 />
               </div>
             </div>
 
             {/* Computed Score */}
-            <div className="border border-neutral-800 p-3 bg-neutral-950 flex justify-between items-baseline">
-              <span className="text-xs font-mono text-neutral-400 uppercase">
-                COMPUTED_TOTAL:
+            <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 flex items-baseline justify-between">
+              <span className="text-xs font-semibold text-neutral-400 uppercase">
+                Calculated Total
               </span>
-              <span className="text-2xl font-black text-[#ff00ff] font-mono">
+              <span className="font-['Rajdhani',sans-serif] font-black text-3xl text-fuchsia-400">
                 {participation + placement + mvp} PTS
               </span>
             </div>
 
             {/* Webhook Checkbox */}
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-3 cursor-pointer py-1">
               <input
                 type="checkbox"
                 checked={announceLeaderboard}
                 onChange={(e) => setAnnounceLeaderboard(e.target.checked)}
-                className="accent-[#ff00ff]"
+                className="w-4 h-4 rounded accent-fuchsia-500"
               />
-              <span className="text-xs font-mono text-neutral-300">
-                [BROADCAST_DISCORD_WEBHOOK]
+              <span className="text-xs font-medium text-neutral-300">
+                Broadcast announcement embed to Discord Webhook
               </span>
             </label>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="py-3 px-6 border-2 border-[#ff00ff] bg-black text-[#ff00ff] hover:bg-[#ff00ff] hover:text-black font-mono font-bold text-xs uppercase tracking-widest transition-none flex items-center justify-center gap-2 disabled:opacity-50"
+              className="py-3.5 px-8 rounded-full bg-[#ff00ff] hover:bg-[#ff24ff] text-black font-extrabold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(255,0,255,0.5)] hover:shadow-[0_0_35px_rgba(255,0,255,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
-              <span>[COMMIT_TELEMETRY_RECORD]</span>
+              <span>Save & Publish Standings</span>
             </button>
 
             {leaderboardStatus && (
-              <div className="border border-[#ff00ff] bg-neutral-950 p-2.5 text-xs text-[#ff00ff] font-mono flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <div className="p-3 rounded-xl bg-fuchsia-950/50 border border-fuchsia-500/40 text-xs text-fuchsia-300 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-fuchsia-400" />
                 <span>{leaderboardStatus}</span>
               </div>
             )}
@@ -221,66 +221,66 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
         </div>
 
         {/* 2. CREATORS MANAGER */}
-        <div className="border-2 border-[#0055ff] p-6 bg-black">
-          <div className="flex items-center gap-2 mb-6 border-b border-neutral-800 pb-3">
-            <Video className="w-5 h-5 text-[#0055ff]" />
-            <h2 className="text-xl font-bold uppercase tracking-wider text-white font-mono">
-              [CREATORS_MANAGER]
+        <div className="rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-8 shadow-[0_0_35px_rgba(0,255,255,0.15)]">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-800">
+            <Video className="w-5 h-5 text-cyan-400" />
+            <h2 className="font-['Rajdhani',sans-serif] font-bold text-2xl text-white uppercase">
+              Creators Manager
             </h2>
           </div>
 
-          <form onSubmit={handleAddVideo} className="flex flex-col gap-5">
-            {/* Creator Radio */}
+          <form onSubmit={handleAddVideo} className="flex flex-col gap-6">
+            {/* Creator Selection */}
             <div>
-              <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
-                CREATOR_NAME:
+              <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+                Select Creator
               </label>
               <div className="flex gap-6">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-mono">
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-white">
                   <input
                     type="radio"
                     name="creator"
                     value="Bob"
                     checked={creatorName === 'Bob'}
                     onChange={() => setCreatorName('Bob')}
-                    className="accent-[#0055ff]"
+                    className="accent-cyan-400"
                   />
-                  <span className="text-white font-bold">[BOB]</span>
+                  <span>Bob</span>
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-mono">
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-white">
                   <input
                     type="radio"
                     name="creator"
                     value="Strazak"
                     checked={creatorName === 'Strazak'}
                     onChange={() => setCreatorName('Strazak')}
-                    className="accent-[#ff00ff]"
+                    className="accent-fuchsia-500"
                   />
-                  <span className="text-white font-bold">[STRAZAK]</span>
+                  <span>Strazak</span>
                 </label>
               </div>
             </div>
 
-            {/* Video Title */}
+            {/* Title */}
             <div>
-              <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                VIDEO_TITLE:
+              <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                Video Title
               </label>
               <input
                 type="text"
                 required
-                placeholder="e.g. GRAND CHAMPION AIR DRIBBLE BUMPS"
+                placeholder="e.g. Grand Champion Flip Resets & Pinches"
                 value={videoTitle}
                 onChange={(e) => setVideoTitle(e.target.value)}
-                className="w-full bg-black text-white font-mono text-sm py-2 px-3 border border-neutral-700 focus:border-[#0055ff] focus:outline-none placeholder:text-neutral-700"
+                className="w-full bg-neutral-900/90 text-white font-medium text-sm py-3 px-4 rounded-xl border border-neutral-700 focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(0,255,255,0.35)] focus:outline-none transition-all placeholder:text-neutral-600"
               />
             </div>
 
             {/* YouTube URL */}
             <div>
-              <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                YOUTUBE_URL:
+              <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                YouTube URL
               </label>
               <input
                 type="url"
@@ -288,44 +288,48 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
                 placeholder="https://www.youtube.com/watch?v=..."
                 value={youtubeUrl}
                 onChange={(e) => setYoutubeUrl(e.target.value)}
-                className="w-full bg-black text-white font-mono text-sm py-2 px-3 border border-neutral-700 focus:border-[#0055ff] focus:outline-none placeholder:text-neutral-700"
+                className="w-full bg-neutral-900/90 text-white font-medium text-sm py-3 px-4 rounded-xl border border-neutral-700 focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(0,255,255,0.35)] focus:outline-none transition-all placeholder:text-neutral-600"
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-[11px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                DESCRIPTION:
+              <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-1.5">
+                Description
               </label>
               <textarea
                 rows={2}
-                placeholder="High-octane goals and competitive plays..."
+                placeholder="Brief summary of highlights..."
                 value={videoDescription}
                 onChange={(e) => setVideoDescription(e.target.value)}
-                className="w-full bg-black text-white font-mono text-xs py-2 px-3 border border-neutral-700 focus:border-[#0055ff] focus:outline-none resize-none placeholder:text-neutral-700"
+                className="w-full bg-neutral-900/90 text-white font-medium text-xs py-2.5 px-4 rounded-xl border border-neutral-700 focus:border-cyan-400 focus:shadow-[0_0_20px_rgba(0,255,255,0.35)] focus:outline-none resize-none transition-all placeholder:text-neutral-600"
               />
             </div>
 
             {/* Toggles */}
             <div className="flex flex-col gap-2">
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-mono">
+              <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={isFeatured}
                   onChange={(e) => setIsFeatured(e.target.checked)}
-                  className="accent-[#0055ff]"
+                  className="w-4 h-4 rounded accent-cyan-400"
                 />
-                <span className="text-neutral-300">[PIN_TO_HOME_ALERT]</span>
+                <span className="text-xs font-medium text-neutral-300">
+                  Feature in alert banner on home page
+                </span>
               </label>
 
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-mono">
+              <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={announceVideo}
                   onChange={(e) => setAnnounceVideo(e.target.checked)}
-                  className="accent-[#0055ff]"
+                  className="w-4 h-4 rounded accent-cyan-400"
                 />
-                <span className="text-neutral-300">[BROADCAST_DISCORD_WEBHOOK]</span>
+                <span className="text-xs font-medium text-neutral-300">
+                  Broadcast drop announcement to Discord Webhook
+                </span>
               </label>
             </div>
 
@@ -333,15 +337,15 @@ export default function AdminDashboard({ initialEntries }: AdminDashboardProps) 
             <button
               type="submit"
               disabled={loading}
-              className="py-3 px-6 border-2 border-[#0055ff] bg-black text-[#0055ff] hover:bg-[#0055ff] hover:text-black font-mono font-bold text-xs uppercase tracking-widest transition-none flex items-center justify-center gap-2 disabled:opacity-50"
+              className="py-3.5 px-8 rounded-full bg-[#00ffff] hover:bg-[#33ffff] text-black font-extrabold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(0,255,255,0.5)] hover:shadow-[0_0_35px_rgba(0,255,255,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
-              <span>[PUBLISH_MONTAGE_ENTRY]</span>
+              <span>Publish Video Montage</span>
             </button>
 
             {videoStatus && (
-              <div className="border border-[#0055ff] bg-neutral-950 p-2.5 text-xs text-[#0055ff] font-mono flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <div className="p-3 rounded-xl bg-cyan-950/50 border border-cyan-500/40 text-xs text-cyan-300 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-cyan-400" />
                 <span>{videoStatus}</span>
               </div>
             )}

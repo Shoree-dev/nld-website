@@ -4,30 +4,31 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-black border-t border-[#ff00ff] mt-auto py-8 px-4 md:px-8 select-none">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono">
-        <div className="flex items-center gap-2">
-          <span className="text-[#0055ff] font-bold">//</span>
-          <span className="text-[#ff00ff] font-black tracking-widest">NLD.ARCADE</span>
-          <span className="text-neutral-500">
-            [OFFICIAL_RL_CIRCUIT_EST.2024]
+    <footer className="w-full bg-[#020208] border-t border-neutral-800/80 mt-auto py-10 px-6 md:px-12 select-none">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-400">
+        <div className="flex items-center gap-3">
+          <span className="font-['Rajdhani',sans-serif] font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-400">
+            NLD
+          </span>
+          <span className="text-xs text-neutral-500 font-medium">
+            © {new Date().getFullYear()} No Licensed Drivers. All rights reserved.
           </span>
         </div>
 
-        <div className="flex items-center gap-6 text-neutral-400">
-          <Link href="/leaderboard" className="hover:text-[#ff00ff] transition-none">
-            [LEADERBOARD]
+        <div className="flex items-center gap-8 text-xs font-semibold uppercase tracking-wider">
+          <Link href="/leaderboard" className="hover:text-cyan-400 transition-colors">
+            Leaderboard
           </Link>
-          <Link href="/creators" className="hover:text-[#0055ff] transition-none">
-            [NLD_STUDIOS]
+          <Link href="/creators" className="hover:text-fuchsia-400 transition-colors">
+            NLD Studios
           </Link>
           <a
             href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL || 'https://discord.gg'}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#ff00ff] transition-none"
+            className="hover:text-white transition-colors"
           >
-            [DISCORD_SERVER]
+            Discord Server
           </a>
         </div>
       </div>

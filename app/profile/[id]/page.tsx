@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPlayerProfile, getLeaderboardEntries } from '@/lib/data';
-import { ShieldX, AlertTriangle, ArrowLeft, Trophy, Zap, Target, Star, Terminal } from 'lucide-react';
+import { ShieldX, AlertTriangle, ArrowLeft, Trophy, Zap, Target, Star } from 'lucide-react';
 
 interface ProfilePageProps {
   params: Promise<{ id: string }>;
@@ -23,40 +23,24 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const isBottomTen = rank >= bottomTenThreshold;
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 md:px-8 py-10 select-none">
-      {/* Return Link */}
-      <div className="mb-8">
+    <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-12 select-none">
+      {/* Return Button */}
+      <div className="mb-10">
         <Link
           href="/leaderboard"
-          className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-[#ff00ff] transition-none border border-neutral-800 px-3 py-1.5 bg-black"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900/80 border border-neutral-800 text-xs font-semibold uppercase tracking-wider text-neutral-300 hover:text-white hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all duration-300"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>[RETURN_TO_LEADERBOARD]</span>
+          <span>Back to Leaderboard</span>
         </Link>
       </div>
 
-      {/* Main Dossier Card (Sharp 2px Neon Border) */}
-      <div className="border-2 border-[#ff00ff] p-6 md:p-8 bg-black mb-8 relative">
-        {/* Corner notches */}
-        <div className="absolute -top-1 -left-1 w-2 h-2 bg-[#ff00ff]" />
-        <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#ff00ff]" />
-        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-[#ff00ff]" />
-        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#ff00ff]" />
-
-        <div className="flex items-center justify-between border-b border-neutral-800 pb-4 mb-6">
-          <div className="flex items-center gap-2 text-xs font-mono text-[#0055ff] tracking-widest uppercase">
-            <Terminal className="w-4 h-4" />
-            <span>PILOT_DOSSIER // SECTOR_RECORD</span>
-          </div>
-          <span className="text-xs font-mono text-neutral-500">
-            DISCORD_ID: {profile.discord_id}
-          </span>
-        </div>
-
-        <div className="flex flex-col md:flex-row items-start gap-6 md:gap-8">
-          {/* Avatar with Sharp Frame */}
+      {/* Main Dossier Card */}
+      <div className="rounded-3xl border border-neutral-800 bg-[#070716]/90 backdrop-blur-2xl p-8 md:p-12 mb-10 shadow-[0_0_40px_rgba(0,255,255,0.12)]">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+          {/* Avatar with Glowing Ring */}
           <div className="relative shrink-0">
-            <div className="relative w-28 h-28 md:w-36 md:h-36 border-2 border-white overflow-hidden bg-neutral-900">
+            <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden ring-4 ring-fuchsia-500 shadow-[0_0_30px_rgba(255,0,255,0.5)]">
               <Image
                 src={profile.avatar_url || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300&auto=format&fit=crop&q=80'}
                 alt={profile.username}
@@ -66,43 +50,48 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               />
             </div>
 
-            {/* EASTER EGG: Banned Stamp */}
+            {/* Banned Overlay Badge */}
             {isBanned && (
-              <div className="mt-2 text-center">
-                <span className="px-2 py-1 border border-red-500 bg-red-950 text-red-400 font-bold text-[10px] uppercase font-mono block">
-                  [REVOKED // DISQUALIFIED]
+              <div className="mt-4 text-center">
+                <span className="px-3 py-1 rounded-full bg-red-950/80 border border-red-500 text-red-400 text-xs font-bold inline-flex items-center gap-1 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                  <ShieldX className="w-3.5 h-3.5" />
+                  License Revoked
                 </span>
               </div>
             )}
           </div>
 
-          {/* Pilot Info */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 flex-wrap mb-2">
-              <h1 className="text-2xl sm:text-4xl font-black uppercase text-white font-mono tracking-tight">
+          {/* Details */}
+          <div className="flex-1 min-w-0 text-center md:text-left">
+            <div className="flex flex-col md:flex-row md:items-center gap-3 mb-3">
+              <h1 className="font-['Rajdhani',sans-serif] font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">
                 {profile.username}
               </h1>
 
               {isBottomTen && !isBanned && (
-                <span className="px-2 py-0.5 border border-yellow-400 bg-black text-yellow-400 text-xs font-bold font-mono inline-flex items-center gap-1">
-                  <AlertTriangle className="w-3 h-3" />
-                  [STUDENT_DRIVER]
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/50 text-amber-300 text-xs font-semibold shadow-[0_0_15px_rgba(245,158,11,0.3)] w-fit mx-auto md:mx-0">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  Student Driver
                 </span>
               )}
             </div>
 
-            <p className="text-xs sm:text-sm text-neutral-400 font-mono mb-4 leading-relaxed">
+            <p className="text-xs text-neutral-400 font-mono mb-4">
+              Discord ID: {profile.discord_id}
+            </p>
+
+            <p className="text-sm md:text-base text-neutral-300 leading-relaxed max-w-2xl mb-6">
               {profile.bio || 'Active competitive driver in the No Licensed Drivers Rocket League circuit.'}
             </p>
 
             {/* Roles Chips */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap justify-center md:justify-start gap-2.5">
               {profile.roles?.map((role, idx) => (
                 <span
                   key={idx}
-                  className="px-2 py-0.5 border border-neutral-700 bg-black text-[#0055ff] text-[11px] font-mono uppercase font-bold"
+                  className="px-3.5 py-1 rounded-full bg-cyan-950/30 border border-cyan-500/30 text-cyan-300 text-xs font-semibold"
                 >
-                  [{role}]
+                  {role}
                 </span>
               ))}
             </div>
@@ -110,57 +99,57 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* Telemetry Stats Grid (Sharp 1px Borders) */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
-            <Trophy className="w-3.5 h-3.5 text-[#ff00ff]" />
-            CURRENT_RANK
-          </span>
-          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+      {/* Telemetry Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070716]/80 backdrop-blur-xl p-6">
+          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+            <Trophy className="w-4 h-4 text-fuchsia-400" />
+            <span>Leaderboard Rank</span>
+          </div>
+          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-white">
             #{rank}
           </span>
         </div>
 
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
-            <Star className="w-3.5 h-3.5 text-[#0055ff]" />
-            TOTAL_SCORE
-          </span>
-          <span className="text-2xl sm:text-3xl font-black text-[#0055ff] font-mono">
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070716]/80 backdrop-blur-xl p-6">
+          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+            <Star className="w-4 h-4 text-cyan-400" />
+            <span>Total Points</span>
+          </div>
+          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-cyan-400">
             {leaderboardEntry?.total_score || 0} PTS
           </span>
         </div>
 
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
-            <Target className="w-3.5 h-3.5 text-neutral-400" />
-            PLACEMENT_PTS
-          </span>
-          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070716]/80 backdrop-blur-xl p-6">
+          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+            <Target className="w-4 h-4 text-neutral-400" />
+            <span>Placement Score</span>
+          </div>
+          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-white">
             {leaderboardEntry?.placement_points || 0}
           </span>
         </div>
 
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="flex items-center gap-1.5 text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-1">
-            <Zap className="w-3.5 h-3.5 text-[#ff00ff]" />
-            MVP_POINTS
-          </span>
-          <span className="text-2xl sm:text-3xl font-black text-[#ff00ff] font-mono">
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070716]/80 backdrop-blur-xl p-6">
+          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+            <Zap className="w-4 h-4 text-fuchsia-400" />
+            <span>MVP Score</span>
+          </div>
+          <span className="font-['Rajdhani',sans-serif] font-bold text-4xl text-fuchsia-400">
             {leaderboardEntry?.mvp_points || 0}
           </span>
         </div>
       </div>
 
-      {/* Specs Panel */}
-      <div className="border border-neutral-800 p-4 bg-black flex flex-wrap gap-8 text-xs font-mono">
+      {/* Car & Rank specs */}
+      <div className="rounded-2xl border border-neutral-800/80 bg-[#070716]/80 backdrop-blur-xl p-6 flex flex-wrap gap-8 text-sm">
         <div>
-          <span className="text-neutral-500 block text-[10px]">CHASSIS_SPEC</span>
+          <span className="text-neutral-500 block text-xs font-medium">Favorite Car</span>
           <span className="text-white font-bold">{profile.favorite_car || 'Octane'}</span>
         </div>
         <div>
-          <span className="text-neutral-500 block text-[10px]">TIER_CLASSIFICATION</span>
+          <span className="text-neutral-500 block text-xs font-medium">Competitive Tier</span>
           <span className="text-white font-bold">{profile.rank_tier || 'Grand Champion'}</span>
         </div>
       </div>

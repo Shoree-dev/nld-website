@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { VideoItem } from '@/lib/types';
-import { Zap, Radio } from 'lucide-react';
+import { Flame, ArrowUpRight, Disc as DiscordIcon, Trophy, Users, Zap, ShieldAlert } from 'lucide-react';
 
 interface HomeHeroProps {
   featuredVideo: VideoItem | null;
@@ -14,103 +15,127 @@ export default function HomeHero({
   discordInviteUrl = 'https://discord.gg',
 }: HomeHeroProps) {
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 md:px-8 py-12 md:py-20 flex flex-col items-center text-center select-none">
-      {/* 1. Boxed Dynamic Alert Banner (If new montage exists) */}
+    <div className="relative w-full max-w-7xl mx-auto px-6 md:px-12 pt-8 pb-28 flex flex-col items-center text-center select-none overflow-hidden">
+      {/* 1. Large Intersecting Blurred Depth Glows Behind Hero Text */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] md:w-[950px] h-[450px] pointer-events-none -z-10 flex justify-center items-center">
+        {/* Neon Magenta Left Glow */}
+        <div className="w-[360px] md:w-[480px] h-[360px] md:h-[480px] bg-[#ff00ff]/25 rounded-full blur-[130px] -translate-x-20" />
+        {/* Neon Cyan Right Glow */}
+        <div className="w-[360px] md:w-[480px] h-[360px] md:h-[480px] bg-[#00ffff]/25 rounded-full blur-[130px] translate-x-20" />
+      </div>
+
+      {/* 2. Top Alert Banner: Sleek Pill Shape (If new montage exists) */}
       {featuredVideo && (
-        <div className="mb-10 w-full max-w-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="mb-10 z-20"
+        >
           <Link
             href="/creators"
-            className="block border border-[#0055ff] bg-black p-2.5 text-xs text-neutral-300 hover:border-[#ff00ff] hover:text-[#ff00ff] transition-none group"
+            className="group inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-neutral-900/80 backdrop-blur-xl border border-fuchsia-500/40 text-xs md:text-sm font-semibold text-white shadow-[0_0_20px_rgba(255,0,255,0.3)] hover:shadow-[0_0_30px_rgba(255,0,255,0.6)] hover:border-fuchsia-400 hover:scale-105 transition-all duration-300"
           >
-            <div className="flex items-center justify-center gap-2 flex-wrap">
-              <span className="w-2 h-2 bg-[#ff00ff] inline-block animate-pulse" />
-              <span className="text-[#ff00ff] font-bold">[NEW_DROP]:</span>
-              <span className="font-bold truncate max-w-md">
-                {featuredVideo.creator_name} - {featuredVideo.title}
-              </span>
-              <span className="text-[10px] text-neutral-500 font-mono">
-                [PRESS TO VIEW]
-              </span>
-            </div>
+            <span className="p-1 rounded-full bg-fuchsia-500 text-black">
+              <Flame className="w-3.5 h-3.5 fill-black" />
+            </span>
+            <span className="text-neutral-300">
+              New Montage: <strong className="text-white">{featuredVideo.creator_name}</strong> - {featuredVideo.title}
+            </span>
+            <ArrowUpRight className="w-4 h-4 text-fuchsia-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
-        </div>
+        </motion.div>
       )}
 
-      {/* 2. Constrained, Centered Title & Brand */}
-      <div className="border-2 border-[#ff00ff] p-6 md:p-12 w-full max-w-3xl bg-black mb-10 relative">
-        {/* Corner Accent notches */}
-        <div className="absolute -top-1 -left-1 w-2.5 h-2.5 bg-[#ff00ff]" />
-        <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#ff00ff]" />
-        <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 bg-[#ff00ff]" />
-        <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-[#ff00ff]" />
-
-        <div className="flex items-center justify-center gap-2 mb-4 text-xs tracking-widest text-[#0055ff] font-bold">
-          <Radio className="w-4 h-4 animate-pulse" />
-          <span>RL_UNDERGROUND_SECTOR_01</span>
-        </div>
-
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase leading-none font-mono">
+      {/* 3. Hero Typography: Massive, Clean, and Highly Readable */}
+      <div className="my-10 md:my-16 max-w-5xl flex flex-col items-center">
+        <h1 className="font-['Rajdhani',sans-serif] font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight leading-[0.9] text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
           NO LICENSED
           <br />
-          <span className="text-[#ff00ff]">DRIVERS</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-white to-cyan-300">
+            DRIVERS
+          </span>
         </h1>
 
-        <p className="mt-6 text-xs sm:text-sm text-neutral-400 font-mono tracking-wider max-w-xl mx-auto">
-          HIGH-OCTANE FREESTYLE // ZERO BRAKING PERMITTED // WEEKLY ARCADE SHOWDOWNS
+        <p className="mt-8 max-w-2xl text-base sm:text-lg md:text-xl font-medium text-neutral-300 leading-relaxed">
+          The premier chaotic Rocket League community. Supersonic speeds, weekly tournaments, and mechanical mastery.
         </p>
       </div>
 
-      {/* 3. Retro Arcade "INSERT COIN / JOIN DISCORD" Button */}
-      <div className="mb-16">
-        <a
+      {/* 4. Large Pill-Shaped Glowing Magenta "JOIN OUR DISCORD" CTA */}
+      <div className="my-8 md:my-12 z-20">
+        <motion.a
           href={discordInviteUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block px-8 md:px-14 py-4 md:py-5 border-2 border-[#ff00ff] bg-black text-[#ff00ff] hover:bg-[#ff00ff] hover:text-black hover-flicker-magenta transition-none focus:outline-none"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.96 }}
+          className="inline-flex items-center gap-3.5 px-10 sm:px-14 py-4 sm:py-5 rounded-full bg-[#ff00ff] hover:bg-[#ff2bfb] text-black font-extrabold text-base sm:text-lg uppercase tracking-wider shadow-[0_0_25px_rgba(255,0,255,0.65)] hover:shadow-[0_0_45px_rgba(255,0,255,0.95)] transition-shadow duration-300 focus:outline-none"
         >
-          <div className="flex items-center gap-3 text-base sm:text-xl font-black tracking-widest uppercase font-mono">
-            <Zap className="w-5 h-5 fill-current" />
-            <span>[INSERT COIN // JOIN DISCORD]</span>
-            <span className="animate-cursor inline-block font-black">_</span>
-          </div>
-        </a>
+          <DiscordIcon className="w-6 h-6 fill-black" />
+          <span>JOIN OUR DISCORD</span>
+        </motion.a>
       </div>
 
-      {/* 4. Structured CSS Grid Micro-Stats (Sharp 1px Borders) */}
-      <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
-            REG_PILOTS
-          </span>
-          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+      {/* 5. Modern Floating Stats Cards: Rounded-2xl with Subtle Neon Glows */}
+      <div className="w-full max-w-6xl mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070714]/80 backdrop-blur-xl p-6 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.2)] hover:scale-[1.02] transition-all duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+              Community
+            </span>
+            <Users className="w-5 h-5 text-cyan-400" />
+          </div>
+          <span className="block font-['Rajdhani',sans-serif] font-bold text-4xl sm:text-5xl text-white">
             1,420+
           </span>
-        </div>
-
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
-            BRACKETS_FREQ
-          </span>
-          <span className="text-2xl sm:text-3xl font-black text-[#0055ff] font-mono">
-            WEEKLY
+          <span className="block text-sm text-neutral-400 mt-1">
+            Registered Drivers
           </span>
         </div>
 
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
-            HIGH_SCORE
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070714]/80 backdrop-blur-xl p-6 hover:border-fuchsia-500/40 hover:shadow-[0_0_25px_rgba(255,0,255,0.2)] hover:scale-[1.02] transition-all duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-400">
+              Tournaments
+            </span>
+            <Trophy className="w-5 h-5 text-fuchsia-400" />
+          </div>
+          <span className="block font-['Rajdhani',sans-serif] font-bold text-4xl sm:text-5xl text-white">
+            Weekly
           </span>
-          <span className="text-2xl sm:text-3xl font-black text-[#ff00ff] font-mono">
+          <span className="block text-sm text-neutral-400 mt-1">
+            04:00 PM EST Brackets
+          </span>
+        </div>
+
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070714]/80 backdrop-blur-xl p-6 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.2)] hover:scale-[1.02] transition-all duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+              Season Record
+            </span>
+            <Zap className="w-5 h-5 text-cyan-400" />
+          </div>
+          <span className="block font-['Rajdhani',sans-serif] font-bold text-4xl sm:text-5xl text-white">
             920 PTS
           </span>
+          <span className="block text-sm text-neutral-400 mt-1">
+            Apex Driver High Score
+          </span>
         </div>
 
-        <div className="border border-neutral-800 p-4 bg-black">
-          <span className="text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
-            BRAKES_ENABLED
+        <div className="rounded-2xl border border-neutral-800/80 bg-[#070714]/80 backdrop-blur-xl p-6 hover:border-fuchsia-500/40 hover:shadow-[0_0_25px_rgba(255,0,255,0.2)] hover:scale-[1.02] transition-all duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-400">
+              Rules
+            </span>
+            <ShieldAlert className="w-5 h-5 text-fuchsia-400" />
+          </div>
+          <span className="block font-['Rajdhani',sans-serif] font-bold text-4xl sm:text-5xl text-white">
+            0% Brakes
           </span>
-          <span className="text-2xl sm:text-3xl font-black text-white font-mono">
-            FALSE
+          <span className="block text-sm text-neutral-400 mt-1">
+            Pure Supersonic Flight
           </span>
         </div>
       </div>

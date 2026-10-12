@@ -12,7 +12,7 @@ export default function ToastNotifier() {
   useEffect(() => {
     const error = searchParams.get('error');
     if (error === 'unauthorized' || error === 'access_denied') {
-      setToastMessage('[ACCESS_DENIED // LICENSE_REVOKED]');
+      setToastMessage('License Revoked - Access Denied');
     }
   }, [searchParams]);
 
@@ -24,15 +24,15 @@ export default function ToastNotifier() {
   if (!toastMessage) return null;
 
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3 border-2 border-red-600 bg-black text-red-500 font-mono text-xs font-bold uppercase tracking-widest select-none shadow-2xl">
-      <ShieldAlert className="w-5 h-5 stroke-[2.5] shrink-0" />
+    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-full border border-red-500/80 bg-red-950/90 backdrop-blur-xl text-red-200 text-xs font-bold uppercase tracking-wider select-none shadow-[0_0_25px_rgba(239,68,68,0.6)]">
+      <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
       <span>{toastMessage}</span>
       <button
         onClick={handleDismiss}
-        className="ml-2 hover:bg-red-600 hover:text-black p-0.5 transition-none"
+        className="ml-2 hover:opacity-75 transition-opacity"
         aria-label="Close notification"
       >
-        <X className="w-4 h-4 stroke-[2.5]" />
+        <X className="w-4 h-4" />
       </button>
     </div>
   );
