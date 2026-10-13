@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { VideoItem } from '@/lib/types';
@@ -15,6 +16,32 @@ export default function HomeHero({
   featuredVideo,
   discordInviteUrl = 'https://discord.gg',
 }: HomeHeroProps) {
+  const [onlineCount, setOnlineCount] = useState<number>(73);
+  const [memberCount, setMemberCount] = useState<number>(1420);
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/discord-stats');
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data.approximate_presence_count === 'number') {
+            setOnlineCount(data.approximate_presence_count);
+          }
+          if (typeof data.approximate_member_count === 'number') {
+            setMemberCount(data.approximate_member_count);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load stats in HomeHero', err);
+      }
+    }
+
+    loadStats();
+    const interval = setInterval(loadStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Staggered Container Variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -99,15 +126,15 @@ export default function HomeHero({
         <div className="rounded-xl border border-neutral-900 bg-neutral-950/70 p-6 backdrop-blur-md hover:border-cyan-500/40 hover:shadow-[0_0_22px_rgba(0,255,255,0.22)] transition-all duration-300">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-['Outfit',sans-serif]">
-              Community
+              Live Drivers
             </span>
             <Users className="w-5 h-5 text-cyan-400" />
           </div>
           <span className="block font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white tracking-tight">
-            1,420+
+            {onlineCount} Online
           </span>
           <span className="block text-sm text-gray-400 mt-1 font-normal">
-            Registered Drivers
+            {memberCount.toLocaleString()}+ Community Drivers
           </span>
         </div>
 

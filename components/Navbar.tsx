@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
@@ -16,12 +16,35 @@ interface NavbarProps {
     avatarUrl: string | null;
     isAdmin: boolean;
   } | null;
-  onlineCount?: number;
+  initialOnlineCount?: number;
 }
 
-export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
+export default function Navbar({ user, initialOnlineCount = 92 }: NavbarProps) {
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [onlineCount, setOnlineCount] = useState<number>(initialOnlineCount);
+
+  // Poll / fetch live Discord stats
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch('/api/discord-stats');
+        if (res.ok) {
+          const data = await res.json();
+          if (typeof data.approximate_presence_count === 'number') {
+            setOnlineCount(data.approximate_presence_count);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to update live Discord online count', err);
+      }
+    }
+
+    fetchStats();
+    // Poll every 30 seconds for live updates
+    const interval = setInterval(fetchStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const navLinks = [
     { label: 'Leaderboard', href: '/leaderboard' },
@@ -70,7 +93,7 @@ export default function Navbar({ user, onlineCount = 92 }: NavbarProps) {
 
         {/* Right Section: Status Badge & Auth */}
         <div className="flex items-center gap-5">
-          {/* Online Players Pill */}
+          {/* Live Online Players Pill */}
           <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/30 border border-cyan-500/30 text-xs font-semibold text-cyan-300 shadow-[0_0_15px_rgba(0,255,255,0.15)]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
