@@ -3,7 +3,11 @@ import { NextResponse } from 'next/server';
 export const revalidate = 30; // Cache on edge/CDN for 30 seconds
 
 export async function GET() {
-  const guildId = process.env.NEXT_PUBLIC_DISCORD_SERVER_ID || '1078780797835808778';
+  // Support both DISCORD_SERVER_ID and NEXT_PUBLIC_DISCORD_SERVER_ID
+  const guildId =
+    process.env.DISCORD_SERVER_ID ||
+    process.env.NEXT_PUBLIC_DISCORD_SERVER_ID ||
+    '1078780797835808778';
 
   const fallbackData = {
     approximate_member_count: 1420,
@@ -30,7 +34,6 @@ export async function GET() {
       ? data.presence_count
       : fallbackData.approximate_presence_count;
 
-    // Estimate/count active members from payload
     const membersListed = data.members && Array.isArray(data.members) ? data.members.length : 0;
     const memberCount = Math.max(1420, membersListed);
 
