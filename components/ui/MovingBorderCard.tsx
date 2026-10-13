@@ -16,21 +16,20 @@ export default function MovingBorderCard({
   glowColor = 'both',
   duration = 4,
 }: MovingBorderCardProps) {
-  // Aceternity UI style moving beam gradient
-  const gradientMap = {
-    magenta:
-      'radial-gradient(#ff00ff 40%, rgba(255, 0, 255, 0.4) 70%, transparent 100%)',
-    cyan:
-      'radial-gradient(#00ffff 40%, rgba(0, 255, 255, 0.4) 70%, transparent 100%)',
-    both:
-      'radial-gradient(#ff00ff 30%, #00ffff 70%, transparent 100%)',
-  };
+  // Ultra-focused travelling beam without static background illumination
+  // 90% of the circle is 100% transparent, so only the traveling beam / wave is visible
+  const conicBeam =
+    glowColor === 'magenta'
+      ? 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 88%, rgba(255, 0, 255, 0.4) 93%, #ff00ff 97%, #ffffff 99%, transparent 100%)'
+      : glowColor === 'cyan'
+      ? 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 88%, rgba(0, 255, 255, 0.4) 93%, #00ffff 97%, #ffffff 99%, transparent 100%)'
+      : 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 88%, rgba(255, 0, 255, 0.4) 92%, #ff00ff 95%, #00ffff 98%, #ffffff 99%, transparent 100%)';
 
   return (
     <div
-      className={`relative p-[1.5px] rounded-2xl overflow-hidden group hover:scale-[1.02] transition-transform duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.7)] ${className}`}
+      className={`relative p-[1.5px] rounded-2xl overflow-hidden group hover:scale-[1.02] transition-transform duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.8)] bg-neutral-900/60 ${className}`}
     >
-      {/* Moving Laser Beam rotating 360deg continuously via Framer Motion */}
+      {/* The Travelling Neon Wave Beam */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{
@@ -38,35 +37,14 @@ export default function MovingBorderCard({
           repeat: Infinity,
           ease: 'linear',
         }}
-        className="absolute -inset-[150%] pointer-events-none opacity-85 group-hover:opacity-100 transition-opacity"
+        className="absolute -inset-[150%] pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
         style={{
-          background: `conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 75%, ${
-            glowColor === 'magenta'
-              ? '#ff00ff 90%, #ffaaff 98%'
-              : glowColor === 'cyan'
-              ? '#00ffff 90%, #aaffff 98%'
-              : '#ff00ff 85%, #00ffff 98%'
-          }, transparent 100%)`,
-        }}
-      />
-
-      {/* Subtle Traveling Radial Glow Point */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{
-          duration: duration,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-        className="absolute -inset-[100%] pointer-events-none opacity-60 group-hover:opacity-100"
-        style={{
-          background: gradientMap[glowColor],
-          filter: 'blur(16px)',
+          background: conicBeam,
         }}
       />
 
       {/* Inner Solid Card Surface */}
-      <div className="relative w-full h-full rounded-[15px] bg-[#070716]/95 backdrop-blur-xl p-6 z-10 border border-neutral-900/60">
+      <div className="relative w-full h-full rounded-[15px] bg-[#070716] p-6 z-10">
         {children}
       </div>
     </div>
