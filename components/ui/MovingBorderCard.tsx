@@ -14,16 +14,15 @@ export default function MovingBorderCard({
   children,
   className = '',
   glowColor = 'both',
-  duration = 4,
+  duration = 6.5, // Zwiększone z 4s na 6.5s (płynniejsza, nieco wolniejsza fala)
 }: MovingBorderCardProps) {
-  // Ultra-focused travelling beam without static background illumination
-  // 90% of the circle is 100% transparent, so only the traveling beam / wave is visible
+  // Dłuższa fala (rozciągnięty ogon od 72% do 100%, zamiast od 88%)
   const conicBeam =
     glowColor === 'magenta'
-      ? 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 88%, rgba(255, 0, 255, 0.4) 93%, #ff00ff 97%, #ffffff 99%, transparent 100%)'
+      ? 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 72%, rgba(255, 0, 255, 0.1) 78%, rgba(255, 0, 255, 0.45) 88%, #ff00ff 96%, #ffffff 99%, transparent 100%)'
       : glowColor === 'cyan'
-      ? 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 88%, rgba(0, 255, 255, 0.4) 93%, #00ffff 97%, #ffffff 99%, transparent 100%)'
-      : 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 88%, rgba(255, 0, 255, 0.4) 92%, #ff00ff 95%, #00ffff 98%, #ffffff 99%, transparent 100%)';
+      ? 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 72%, rgba(0, 255, 255, 0.1) 78%, rgba(0, 255, 255, 0.45) 88%, #00ffff 96%, #ffffff 99%, transparent 100%)'
+      : 'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 70%, rgba(255, 0, 255, 0.2) 76%, #ff00ff 86%, #00ffff 96%, #ffffff 99%, transparent 100%)';
 
   return (
     <div
