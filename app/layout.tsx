@@ -4,7 +4,6 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ToastNotifier from '@/components/ui/ToastNotifier';
-import BoostTrailCursor from '@/components/ui/BoostTrailCursor';
 import { getCurrentUser } from '@/lib/auth/admin';
 import { Suspense } from 'react';
 
@@ -41,14 +40,11 @@ export default async function RootLayout({
       className={`${outfit.variable} ${inter.variable} bg-black text-white selection:bg-[#ff00ff] selection:text-black`}
     >
       <body className="min-h-screen bg-black text-white flex flex-col font-sans antialiased overflow-x-hidden">
-        {/* Custom Rocket League Boost Trail Cursor */}
-        <BoostTrailCursor />
-
         <Suspense fallback={null}>
           <ToastNotifier />
         </Suspense>
 
-        <Navbar user={user} onlineCount={92} />
+        <Navbar user={user} initialOnlineCount={73} />
         <main className="flex-1 w-full bg-black">{children}</main>
         <Footer />
       </body>

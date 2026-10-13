@@ -19,8 +19,9 @@ export default function MagneticButton({
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { clientX, clientY } = e;
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = (clientX - (left + width / 2)) * 0.35;
-    const y = (clientY - (top + height / 2)) * 0.35;
+    // Smoothly pull button towards cursor (max ~15-20px)
+    const x = (clientX - (left + width / 2)) * 0.28;
+    const y = (clientY - (top + height / 2)) * 0.28;
     setPosition({ x, y });
   };
 
@@ -36,9 +37,10 @@ export default function MagneticButton({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       animate={{ x: position.x, y: position.y }}
-      transition={{ type: 'spring', stiffness: 200, damping: 14, mass: 0.1 }}
-      whileTap={{ scale: 0.95 }}
-      className={`relative inline-flex items-center justify-center rounded-full bg-[#ff00ff] text-black font-extrabold font-['Outfit',sans-serif] tracking-wider uppercase animate-pulse-glow hover:bg-[#ff26ff] transition-colors focus:outline-none cursor-pointer ${className}`}
+      transition={{ type: 'spring', stiffness: 220, damping: 14, mass: 0.12 }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.96 }}
+      className={`relative inline-flex items-center justify-center rounded-full bg-[#ff00ff] text-black font-extrabold font-['Outfit',sans-serif] tracking-wider uppercase animate-pulse-glow hover:bg-[#ff2bfb] transition-colors focus:outline-none cursor-pointer ${className}`}
     >
       {children}
     </motion.a>

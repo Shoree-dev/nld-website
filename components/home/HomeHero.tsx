@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { VideoItem } from '@/lib/types';
-import NeonButton from '@/components/ui/NeonButton';
+import MagneticButton from '@/components/ui/MagneticButton';
+import MovingBorderCard from '@/components/ui/MovingBorderCard';
 import { Flame, ArrowUpRight, Disc as DiscordIcon, Trophy, Users, Zap, ShieldAlert } from 'lucide-react';
 
 interface HomeHeroProps {
@@ -79,12 +80,12 @@ export default function HomeHero({
         <motion.div variants={itemVariants} className="mb-10 z-20">
           <Link
             href="/creators"
-            className="group inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-neutral-950/80 backdrop-blur-xl border border-neutral-800 hover:border-fuchsia-500/50 text-xs md:text-sm font-semibold text-neutral-300 hover:text-white shadow-[0_0_20px_rgba(255,0,255,0.18)] hover:shadow-[0_0_28px_rgba(255,0,255,0.4)] transition-all duration-300"
+            className="group inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-neutral-900/80 backdrop-blur-xl border border-fuchsia-500/40 text-xs md:text-sm font-semibold text-white shadow-[0_0_20px_rgba(255,0,255,0.3)] hover:shadow-[0_0_30px_rgba(255,0,255,0.6)] hover:border-fuchsia-400 hover:scale-105 transition-all duration-300"
           >
             <span className="p-1 rounded-full bg-[#ff00ff] text-black">
               <Flame className="w-3.5 h-3.5 fill-black" />
             </span>
-            <span>
+            <span className="text-neutral-300">
               New Montage: <strong className="text-white font-bold">{featuredVideo.creator_name}</strong> - {featuredVideo.title}
             </span>
             <ArrowUpRight className="w-4 h-4 text-fuchsia-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -110,20 +111,25 @@ export default function HomeHero({
         </p>
       </motion.div>
 
-      {/* 4. UIverse Style Neon Button (Stagger Item 4) */}
+      {/* 4. Magnetic Spring CTA Button (Podąża za kursorem myszy) */}
       <motion.div variants={itemVariants} className="my-4 z-20">
-        <NeonButton href={discordInviteUrl}>
-          <DiscordIcon className="w-6 h-6 fill-current" />
-          <span>JOIN OUR DISCORD</span>
-        </NeonButton>
+        <MagneticButton
+          href={discordInviteUrl}
+          className="px-10 sm:px-14 py-4 sm:py-5 text-base sm:text-lg shadow-[0_0_25px_rgba(255,0,255,0.7)]"
+        >
+          <div className="flex items-center gap-3.5">
+            <DiscordIcon className="w-6 h-6 fill-black" />
+            <span>JOIN OUR DISCORD</span>
+          </div>
+        </MagneticButton>
       </motion.div>
 
-      {/* 5. shadcn/ui Inspired Clean Stats Cards (Stagger Item 5) */}
+      {/* 5. Moving Border Stats Cards (Aceternity UI Style) with Live Stats */}
       <motion.div
         variants={itemVariants}
-        className="w-full max-w-6xl mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left"
+        className="w-full max-w-6xl mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left"
       >
-        <div className="rounded-xl border border-neutral-900 bg-neutral-950/70 p-6 backdrop-blur-md hover:border-cyan-500/40 hover:shadow-[0_0_22px_rgba(0,255,255,0.22)] transition-all duration-300">
+        <MovingBorderCard glowColor="cyan">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-['Outfit',sans-serif]">
               Live Drivers
@@ -133,12 +139,12 @@ export default function HomeHero({
           <span className="block font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white tracking-tight">
             {onlineCount} Online
           </span>
-          <span className="block text-sm text-gray-400 mt-1 font-normal">
+          <span className="block text-sm text-neutral-400 mt-1 font-normal">
             {memberCount.toLocaleString()}+ Community Drivers
           </span>
-        </div>
+        </MovingBorderCard>
 
-        <div className="rounded-xl border border-neutral-900 bg-neutral-950/70 p-6 backdrop-blur-md hover:border-fuchsia-500/40 hover:shadow-[0_0_22px_rgba(255,0,255,0.22)] transition-all duration-300">
+        <MovingBorderCard glowColor="magenta">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-400 font-['Outfit',sans-serif]">
               Tournaments
@@ -148,12 +154,12 @@ export default function HomeHero({
           <span className="block font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white tracking-tight">
             Weekly
           </span>
-          <span className="block text-sm text-gray-400 mt-1 font-normal">
+          <span className="block text-sm text-neutral-400 mt-1 font-normal">
             04:00 PM EST Brackets
           </span>
-        </div>
+        </MovingBorderCard>
 
-        <div className="rounded-xl border border-neutral-900 bg-neutral-950/70 p-6 backdrop-blur-md hover:border-cyan-500/40 hover:shadow-[0_0_22px_rgba(0,255,255,0.22)] transition-all duration-300">
+        <MovingBorderCard glowColor="both">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-['Outfit',sans-serif]">
               Season Record
@@ -163,12 +169,12 @@ export default function HomeHero({
           <span className="block font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white tracking-tight">
             920 PTS
           </span>
-          <span className="block text-sm text-gray-400 mt-1 font-normal">
+          <span className="block text-sm text-neutral-400 mt-1 font-normal">
             Apex Driver High Score
           </span>
-        </div>
+        </MovingBorderCard>
 
-        <div className="rounded-xl border border-neutral-900 bg-neutral-950/70 p-6 backdrop-blur-md hover:border-fuchsia-500/40 hover:shadow-[0_0_22px_rgba(255,0,255,0.22)] transition-all duration-300">
+        <MovingBorderCard glowColor="magenta">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-400 font-['Outfit',sans-serif]">
               Rules
@@ -178,10 +184,10 @@ export default function HomeHero({
           <span className="block font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white tracking-tight">
             0% Brakes
           </span>
-          <span className="block text-sm text-gray-400 mt-1 font-normal">
+          <span className="block text-sm text-neutral-400 mt-1 font-normal">
             Pure Supersonic Flight
           </span>
-        </div>
+        </MovingBorderCard>
       </motion.div>
     </motion.div>
   );
