@@ -129,21 +129,29 @@ export default function HomeHero({
         variants={itemVariants}
         className="w-full max-w-6xl mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left"
       >
+        {/* BOX 1: LIVE DRIVERS COUNT */}
         <MovingBorderCard glowColor="cyan">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-['Outfit',sans-serif]">
-              Live Drivers
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-['Outfit',sans-serif]">
+                Live on Discord
+              </span>
+            </div>
             <Users className="w-5 h-5 text-cyan-400" />
           </div>
           <span className="block font-['Outfit',sans-serif] font-black text-4xl sm:text-5xl text-white tracking-tight">
-            {onlineCount} Online
+            {onlineCount} Drivers
           </span>
           <span className="block text-sm text-neutral-400 mt-1 font-normal">
-            {memberCount.toLocaleString()}+ Community Drivers
+            Active Now on Pitch
           </span>
         </MovingBorderCard>
 
+        {/* BOX 2: TOURNAMENTS */}
         <MovingBorderCard glowColor="magenta">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-400 font-['Outfit',sans-serif]">
@@ -159,6 +167,7 @@ export default function HomeHero({
           </span>
         </MovingBorderCard>
 
+        {/* BOX 3: SEASON RECORD */}
         <MovingBorderCard glowColor="both">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-['Outfit',sans-serif]">
@@ -174,6 +183,7 @@ export default function HomeHero({
           </span>
         </MovingBorderCard>
 
+        {/* BOX 4: RULES */}
         <MovingBorderCard glowColor="magenta">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-400 font-['Outfit',sans-serif]">
