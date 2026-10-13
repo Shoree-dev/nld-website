@@ -4,7 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ToastNotifier from '@/components/ui/ToastNotifier';
-import AuroraBackground from '@/components/ui/AuroraBackground';
+import BoostTrailCursor from '@/components/ui/BoostTrailCursor';
 import { getCurrentUser } from '@/lib/auth/admin';
 import { Suspense } from 'react';
 
@@ -38,18 +38,18 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${inter.variable} bg-[#020208] text-white selection:bg-[#ff00ff] selection:text-black`}
+      className={`${outfit.variable} ${inter.variable} bg-black text-white selection:bg-[#ff00ff] selection:text-black`}
     >
-      <body className="min-h-screen bg-[#020208] text-white flex flex-col font-sans antialiased overflow-x-hidden">
-        {/* Dynamic Animated Aurora / Spotlight Background */}
-        <AuroraBackground />
+      <body className="min-h-screen bg-black text-white flex flex-col font-sans antialiased overflow-x-hidden">
+        {/* Custom Rocket League Boost Trail Cursor */}
+        <BoostTrailCursor />
 
         <Suspense fallback={null}>
           <ToastNotifier />
         </Suspense>
 
         <Navbar user={user} onlineCount={92} />
-        <main className="flex-1 w-full">{children}</main>
+        <main className="flex-1 w-full bg-black">{children}</main>
         <Footer />
       </body>
     </html>
